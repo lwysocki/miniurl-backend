@@ -10,11 +10,25 @@ namespace MiniUrl.DomainTest
         [Fact]
         public void KeyEncodingShouldReturnsStringOfProperLength()
         {
-            IKeyConverter keyConverter = new KeyConverter(6);
+            int keyLength = 6;
+            long originalValue = 0;
+            IKeyConverter keyConverter = new KeyConverter(keyLength);
 
-            string keyMin = keyConverter.Encode(0);
+            string keyMin = keyConverter.Encode(originalValue);
 
-            Assert.Equal(6, keyMin.Length);
+            Assert.Equal(keyLength, keyMin.Length);
+        }
+
+        [Fact]
+        public void KeyDecodingShouldReturnOriginalNumber()
+        {
+            int keyLength = 6;
+            long originalValue = 0;
+            IKeyConverter keyConverter = new KeyConverter(keyLength);
+
+            string key = keyConverter.Encode(originalValue);
+
+            Assert.Equal(originalValue, keyConverter.Decode(key));
         }
     }
 }
