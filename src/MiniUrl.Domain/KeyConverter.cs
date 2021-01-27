@@ -46,5 +46,17 @@ namespace MiniUrl.Domain
 
             return new string(buffer);
         }
+
+        public long Decode(string key)
+        {
+            long number = 0;
+
+            for (int i = 0; i < key.Length; i++)
+            {
+                number = number * AlphabetSize + _alphabet.IndexOf(key[i]);
+            }
+
+            return number - _offset;
+        }
     }
 }
