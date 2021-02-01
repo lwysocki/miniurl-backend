@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 using MiniUrl.KeyManager.Domain;
@@ -11,10 +12,10 @@ namespace MiniUrl.KeyManagerTest
         [Fact]
         public void KeysGeneratorShouldGenerateCorrectKeys()
         {
-            int maxKey = 1000;
+            int keyLimit = 1000;
             int step = 100;
-            int expectedKeysCount = maxKey / step;
-            KeysGenerator keysGenerator = new KeysGenerator(maxKey, step);
+            int expectedKeysCount = keyLimit / step;
+            KeysGenerator keysGenerator = new KeysGenerator(keyLimit, step);
 
             var keys = keysGenerator.Generate();
 
@@ -23,24 +24,46 @@ namespace MiniUrl.KeyManagerTest
         }
 
         [Fact]
-        public void KeyGeneratorGeneratedKeysShouldDependOnIteration()
+        public void KeyGeneratorGeneratedKeysShouldDependOnIterationGiven()
         {
-            int maxKey = 1000;
+            int keyLimit = 1000;
             int step = 100;
             int initialIteration = 1;
-            int lastIteration = step - 2;
-            KeysGenerator keysGenerator = new KeysGenerator(maxKey, step, initialIteration);
+            KeysGenerator keysGenerator = new KeysGenerator(keyLimit, step, initialIteration);
 
             var keysSecondIteration = keysGenerator.Generate();
-            var keysThirdIteration = keysGenerator.Generate();
-
-            keysGenerator = new KeysGenerator(maxKey, step, lastIteration);
-
-            var keysFromLastIteration = keysGenerator.Generate();
 
             Assert.Equal(new List<long> { 2, 102, 202, 302, 402, 502, 602, 702, 802, 902 }, keysSecondIteration);
-            Assert.Equal(new List<long> { 3, 103, 203, 303, 403, 503, 603, 703, 803, 903 }, keysThirdIteration);
-            Assert.Equal(new List<long> { 9, 199, 299, 399, 499, 599, 699, 799, 899, 999 }, keysFromLastIteration);
+        }
+
+        [Fact]
+        public void KeyGeneratorShouldGenerateFullRangeOfKeys()
+        {
+            int keyLimit = 100;
+            int step = 10;
+            int iterationCount = step;
+            KeysGenerator keysGenerator = new KeysGenerator(keyLimit, step);
+
+            long[] expectedKeys = new long[keyLimit - 1];
+            long[] generatedKeys = new long[keyLimit - 1];
+
+            for (int i = 1; i < keyLimit; i++)
+                expectedKeys[i - 1] = i;
+
+            while (iterationCount > 0)
+            {
+                iterationCount--;
+                var keys = keysGenerator.Generate();
+                int i = -1;
+
+                foreach (var key in keys)
+                {
+                    generatedKeys[keysGenerator.Iteration + i] = key;
+                    i += step;
+                };
+            }
+
+            Assert.Equal(expectedKeys, generatedKeys);
         }
     }
 }
