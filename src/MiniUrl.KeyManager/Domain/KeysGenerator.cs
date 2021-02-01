@@ -8,21 +8,25 @@ namespace MiniUrl.KeyManager.Domain
     public class KeysGenerator
     {
         public long Iteration { get; private set; }
+        public long MaxValue { get; private set; }
+        public long Step { get; private set; }
 
-        public KeysGenerator(long iteration = 0)
+        public KeysGenerator(long maxValue, long step, long iteration = 0)
         {
             Iteration = iteration;
+            MaxValue = maxValue;
+            Step = step;
         }
 
-        public IList<long> Generate(long maxValue, long step)
+        public IList<long> Generate()
         {
             IList<long> keys = new List<long>();
             long current = ++Iteration;
 
-            while (current < maxValue)
+            while (current < MaxValue)
             {
                 keys.Add(current);
-                current += step;
+                current += Step;
             }
 
             return keys;
