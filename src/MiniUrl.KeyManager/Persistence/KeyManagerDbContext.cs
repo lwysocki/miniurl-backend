@@ -9,6 +9,7 @@ namespace MiniUrl.KeyManager.Persistence
 {
     public class KeyManagerDbContext : DbContext
     {
+        public DbSet<Configuration> Configurations { get; set; }
         public DbSet<Key> Keys { get; set; }
 
         public KeyManagerDbContext(DbContextOptions<KeyManagerDbContext> options) : base(options)
@@ -23,6 +24,9 @@ namespace MiniUrl.KeyManager.Persistence
             builder.Entity<Key>().HasKey(p => p.Id);
             builder.Entity<Key>().Property(p => p.Id).IsRequired();
             builder.Entity<Key>().Property(p => p.State).IsRequired();
+
+            builder.Entity<Configuration>().HasKey(p => p.Key);
+            builder.Entity<Configuration>().Property(p => p.Value).IsRequired();
         }
     }
 }
