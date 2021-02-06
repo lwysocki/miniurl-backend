@@ -15,7 +15,7 @@ namespace MiniUrl.KeyManagerTest
             int keyLimit = 1000;
             int step = 100;
             int expectedKeysCount = keyLimit / step;
-            KeysGenerator keysGenerator = new KeysGenerator(keyLimit, step);
+            IKeysGenerator keysGenerator = new KeysGenerator(keyLimit, step);
 
             var keys = keysGenerator.Generate();
 
@@ -29,7 +29,7 @@ namespace MiniUrl.KeyManagerTest
             int keyLimit = 1000;
             int step = 100;
             int initialIteration = 1;
-            KeysGenerator keysGenerator = new KeysGenerator(keyLimit, step, initialIteration);
+            IKeysGenerator keysGenerator = new KeysGenerator(keyLimit, step, initialIteration);
 
             var keysSecondIteration = keysGenerator.Generate();
 
@@ -42,7 +42,7 @@ namespace MiniUrl.KeyManagerTest
             int keyLimit = 1000;
             int step = 100;
             int iterationCount = step;
-            KeysGenerator keysGenerator = new KeysGenerator(keyLimit, step);
+            IKeysGenerator keysGenerator = new KeysGenerator(keyLimit, step);
 
             long[] expectedKeys = new long[keyLimit - 1];
             long[] generatedKeys = new long[keyLimit - 1];
@@ -72,7 +72,7 @@ namespace MiniUrl.KeyManagerTest
             int keyLimit = 1000;
             int step = 100;
             int iterationCount = step;
-            KeysGenerator keysGenerator = new KeysGenerator(keyLimit, step);
+            IKeysGenerator keysGenerator = new KeysGenerator(keyLimit, step);
 
             Dictionary<long, int> keyCount = new Dictionary<long, int>();
 

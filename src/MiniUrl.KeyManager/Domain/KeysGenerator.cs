@@ -5,17 +5,17 @@ using System.Threading.Tasks;
 
 namespace MiniUrl.KeyManager.Domain
 {
-    public class KeysGenerator
+    public class KeysGenerator : IKeysGenerator
     {
         public long Iteration { get; private set; }
-        public long Limit { get; private set; }
-        public long Step { get; private set; }
+        private long _limit;
+        private long _step;
 
         public KeysGenerator(long limit, long step, long iteration = 0)
         {
             Iteration = iteration;
-            Limit = limit;
-            Step = step;
+            _limit = limit;
+            _step = step;
         }
 
         public IList<long> Generate()
@@ -23,10 +23,10 @@ namespace MiniUrl.KeyManager.Domain
             IList<long> keys = new List<long>();
             long current = ++Iteration;
 
-            while (current < Limit)
+            while (current < _limit)
             {
                 keys.Add(current);
-                current += Step;
+                current += _step;
             }
 
             return keys;
