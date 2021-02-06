@@ -23,9 +23,9 @@ namespace MiniUrl.KeyManager.Worker
             using (var context = scope.ServiceProvider.GetService<KeyManagerDbContext>())
             {
                 context.Database.EnsureCreated();
-                //TODO: make KeysGenerator a service?
-                //KeysGenerator keysGenerator = new KeysGenerator(67645734911, 8192);
-                KeysGenerator keysGenerator = new KeysGenerator(10000, 100);
+
+                //Create class responsible for initialization, and rely on keys generator being injected?
+                var keysGenerator = host.Services.GetService<IKeysGenerator>();
                 var keys = keysGenerator.Generate();
                 var keyEntitties = keys.Select(k => new Key(k));
 

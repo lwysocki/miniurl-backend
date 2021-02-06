@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using MiniUrl.KeyManager.Domain;
 using MiniUrl.KeyManager.Persistence;
 using System;
 using System.Collections.Generic;
@@ -38,6 +39,9 @@ namespace MiniUrl.KeyManager.Worker
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MiniUrl.KeyManager.Worker", Version = "v1" });
             });
+
+            //services.AddSingleton<IKeysGenerator>(new KeysGenerator(67645734911, 8192));
+            services.AddSingleton<IKeysGenerator>(new KeysGenerator(10000, 100));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
