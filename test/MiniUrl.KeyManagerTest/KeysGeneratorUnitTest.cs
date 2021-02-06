@@ -39,8 +39,8 @@ namespace MiniUrl.KeyManagerTest
         [Fact]
         public void KeyGeneratorShouldGenerateFullRangeOfKeys()
         {
-            int keyLimit = 100;
-            int step = 10;
+            int keyLimit = 1000;
+            int step = 100;
             int iterationCount = step;
             KeysGenerator keysGenerator = new KeysGenerator(keyLimit, step);
 
@@ -64,6 +64,33 @@ namespace MiniUrl.KeyManagerTest
             }
 
             Assert.Equal(expectedKeys, generatedKeys);
+        }
+
+        [Fact]
+        public void KeyGeneratotShallNotGenerateConflictKeys()
+        {
+            int keyLimit = 1000;
+            int step = 100;
+            int iterationCount = step;
+            KeysGenerator keysGenerator = new KeysGenerator(keyLimit, step);
+
+            Dictionary<long, int> keyCount = new Dictionary<long, int>();
+
+            while (iterationCount > 0)
+            {
+                iterationCount--;
+                var keys = keysGenerator.Generate();
+
+                foreach (var key in keys)
+                {
+                    if (!keyCount.ContainsKey(key))
+                        keyCount.Add(key, 1);
+                    else
+                        keyCount[key]++;
+                };
+            }
+
+            Assert.True(!keyCount.Values.Any(v => v != 1));
         }
     }
 }
