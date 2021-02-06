@@ -24,6 +24,7 @@ namespace MiniUrl.KeyManager.Worker
             {
                 context.Database.EnsureCreated();
 
+                //Restore generator config
                 //Create class responsible for initialization, and rely on keys generator being injected?
                 var keysGenerator = host.Services.GetService<IKeysGenerator>();
                 var keys = keysGenerator.Generate();
@@ -35,6 +36,9 @@ namespace MiniUrl.KeyManager.Worker
                 }
 
                 context.SaveChanges();
+
+                //Save generator config
+                //Unit of work pattern?
             }
 
             host.Run();

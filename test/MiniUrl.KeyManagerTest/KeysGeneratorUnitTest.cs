@@ -15,7 +15,7 @@ namespace MiniUrl.KeyManagerTest
             int keyLimit = 1000;
             int step = 100;
             int expectedKeysCount = keyLimit / step;
-            IKeysGenerator keysGenerator = new KeysGenerator(keyLimit, step);
+            IKeysGenerator keysGenerator = new KeysGenerator($"{{\"Iteration\":0,\"Limit\":{keyLimit},\"Step\":{step}}}");
 
             var keys = keysGenerator.Generate();
 
@@ -29,7 +29,7 @@ namespace MiniUrl.KeyManagerTest
             int keyLimit = 1000;
             int step = 100;
             int initialIteration = 1;
-            IKeysGenerator keysGenerator = new KeysGenerator(keyLimit, step, initialIteration);
+            IKeysGenerator keysGenerator = new KeysGenerator($"{{\"Iteration\":{initialIteration},\"Limit\":{keyLimit},\"Step\":{step}}}");
 
             var keysSecondIteration = keysGenerator.Generate();
 
@@ -42,7 +42,7 @@ namespace MiniUrl.KeyManagerTest
             int keyLimit = 1000;
             int step = 100;
             int iterationCount = step;
-            IKeysGenerator keysGenerator = new KeysGenerator(keyLimit, step);
+            KeysGenerator keysGenerator = new KeysGenerator($"{{\"Iteration\":0,\"Limit\":{keyLimit},\"Step\":{step}}}");
 
             long[] expectedKeys = new long[keyLimit - 1];
             long[] generatedKeys = new long[keyLimit - 1];
@@ -58,7 +58,7 @@ namespace MiniUrl.KeyManagerTest
 
                 foreach (var key in keys)
                 {
-                    generatedKeys[keysGenerator.Iteration + i] = key;
+                    generatedKeys[keysGenerator.Configuration.Iteration + i] = key;
                     i += step;
                 };
             }
@@ -72,7 +72,7 @@ namespace MiniUrl.KeyManagerTest
             int keyLimit = 1000;
             int step = 100;
             int iterationCount = step;
-            IKeysGenerator keysGenerator = new KeysGenerator(keyLimit, step);
+            IKeysGenerator keysGenerator = new KeysGenerator($"{{\"Iteration\":0,\"Limit\":{keyLimit},\"Step\":{step}}}");
 
             Dictionary<long, int> keyCount = new Dictionary<long, int>();
 

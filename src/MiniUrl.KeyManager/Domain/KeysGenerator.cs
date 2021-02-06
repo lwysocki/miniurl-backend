@@ -1,32 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
+
+using MiniUrl.KeyManager.Utility;
 
 namespace MiniUrl.KeyManager.Domain
 {
     public class KeysGenerator : IKeysGenerator
     {
-        public long Iteration { get; private set; }
-        private long _limit;
-        private long _step;
-
-        public KeysGenerator(long limit, long step, long iteration = 0)
+        public class KeysGeneratorConfiguration
         {
-            Iteration = iteration;
-            _limit = limit;
-            _step = step;
+            public long Iteration { get; set; }
+            public long Limit { get; set; }
+            public long Step { get; set; }
+        }
+
+        public JsonDocument ConfigurationJson {
+            get
+            {
+                return JsonDocument.Parse(JsonSerializer.Serialize(Configuration));
+            }
+        }
+
+        public KeysGeneratorConfiguration Configuration { get; private set; }
+
+        public KeysGenerator(string configuration) : this(JsonDocument.Parse(configuration))
+        {
+        }
+
+        public KeysGenerator(JsonDocument configuration)
+        {
+            Configuration = JsonSerializer.Deserialize<KeysGeneratorConfiguration>(configuration.ToJsonString());
         }
 
         public IList<long> Generate()
         {
             IList<long> keys = new List<long>();
-            long current = ++Iteration;
+            long current = ++Configuration.Iteration;
 
-            while (current < _limit)
+            while (current < Configuration.Limit)
             {
                 keys.Add(current);
-                current += _step;
+                current += Configuration.Step;
             }
 
             return keys;

@@ -40,8 +40,8 @@ namespace MiniUrl.KeyManager.Worker
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MiniUrl.KeyManager.Worker", Version = "v1" });
             });
 
-            //services.AddSingleton<IKeysGenerator>(new KeysGenerator(67645734911, 8192));
-            services.AddSingleton<IKeysGenerator>(new KeysGenerator(10000, 100));
+            //services.AddSingleton<IKeysGenerator>(new KeysGenerator($"{{\"Iteration\":0,\"Limit\":67645734911,\"Step\":8192}}"));
+            services.AddSingleton<IKeysGenerator>(new KeysGenerator($"{{\"Iteration\":0,\"Limit\":10000,\"Step\":100}}"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

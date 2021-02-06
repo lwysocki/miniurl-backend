@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json;
 
 namespace MiniUrl.KeyManager.Domain
 {
     public interface IKeysGenerator
     {
-        long Iteration { get; }
+        JsonDocument ConfigurationJson { get; }
 
         IList<long> Generate();
     }
