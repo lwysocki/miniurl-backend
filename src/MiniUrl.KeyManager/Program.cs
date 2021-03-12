@@ -35,6 +35,8 @@ namespace MiniUrl.KeyManager.Worker
                     context.Keys.Add(e);
                 }
 
+                context.KeyManagerConfigurations.Add(new KeyManagerConfiguration() { Value = keysGenerator.ConfigurationJson });
+
                 context.SaveChanges();
 
                 //Save generator config

@@ -9,7 +9,7 @@ namespace MiniUrl.KeyManager.Persistence
 {
     public class KeyManagerDbContext : DbContext
     {
-        public DbSet<Configuration> Configurations { get; set; }
+        public DbSet<KeyManagerConfiguration> KeyManagerConfigurations { get; set; }
         public DbSet<Key> Keys { get; set; }
 
         public KeyManagerDbContext(DbContextOptions<KeyManagerDbContext> options) : base(options)
@@ -25,8 +25,12 @@ namespace MiniUrl.KeyManager.Persistence
             builder.Entity<Key>().Property(p => p.Id).IsRequired();
             builder.Entity<Key>().Property(p => p.State).IsRequired();
 
-            builder.Entity<Configuration>().HasKey(p => p.Key);
-            builder.Entity<Configuration>().Property(p => p.Value).IsRequired();
+            // Todo: define common properties once?
+            builder.Entity<KeyManagerConfiguration>().ToTable(typeof(Configuration).Name);
+            builder.Entity<KeyManagerConfiguration>().HasKey(p => p.Key);
+            builder.Entity<KeyManagerConfiguration>().Property(p => p.Key).ValueGeneratedNever();
+            builder.Entity<KeyManagerConfiguration>().Property(p => p.Value).IsRequired();
+            builder.Entity<KeyManagerConfiguration>().HasBaseType<Configuration>();
         }
     }
 }
