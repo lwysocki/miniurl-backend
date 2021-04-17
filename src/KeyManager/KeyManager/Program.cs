@@ -5,7 +5,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MiniUrl.KeyManager.Domain;
 using MiniUrl.KeyManager.Domain.Models;
-using MiniUrl.KeyManager.Persistence;
+using MiniUrl.KeyManager.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
