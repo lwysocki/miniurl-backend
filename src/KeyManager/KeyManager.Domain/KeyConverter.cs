@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MiniUrl.Domain
+namespace MiniUrl.KeyManager.Domain
 {
     public class KeyConverter : IKeyConverter
     {

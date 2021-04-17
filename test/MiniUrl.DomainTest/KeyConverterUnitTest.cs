@@ -1,7 +1,7 @@
 using System;
 using Xunit;
 
-using MiniUrl.Domain;
+using MiniUrl.KeyManager.Domain;
 
 namespace MiniUrl.DomainTest
 {

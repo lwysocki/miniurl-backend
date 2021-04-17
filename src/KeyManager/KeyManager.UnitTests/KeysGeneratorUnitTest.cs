@@ -5,7 +5,7 @@ using Xunit;
 
 using MiniUrl.KeyManager.Domain;
 
-namespace MiniUrl.KeyManagerTest
+namespace MiniUrl.KeyManager.UnitTests
 {
     public class KeysGeneratorUnitTest
     {
@@ -42,7 +42,7 @@ namespace MiniUrl.KeyManagerTest
             int keyLimit = 1000;
             int step = 100;
             int iterationCount = step;
-            KeysGenerator keysGenerator = new KeysGenerator($"{{\"Iteration\":0,\"Limit\":{keyLimit},\"Step\":{step}}}");
+            KeysGenerator keysGenerator = new($"{{\"Iteration\":0,\"Limit\":{keyLimit},\"Step\":{step}}}");
 
             long[] expectedKeys = new long[keyLimit - 1];
             long[] generatedKeys = new long[keyLimit - 1];
@@ -74,7 +74,7 @@ namespace MiniUrl.KeyManagerTest
             int iterationCount = step;
             IKeysGenerator keysGenerator = new KeysGenerator($"{{\"Iteration\":0,\"Limit\":{keyLimit},\"Step\":{step}}}");
 
-            Dictionary<long, int> keyCount = new Dictionary<long, int>();
+            Dictionary<long, int> keyCount = new();
 
             while (iterationCount > 0)
             {

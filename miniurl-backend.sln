@@ -8,15 +8,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniUrl.DomainTest", "test\
 		{401B831F-3B11-42CE-BCBA-3005BA9ADF79} = {401B831F-3B11-42CE-BCBA-3005BA9ADF79}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniUrl.Domain", "src\KeyManager\MiniUrl.KeyManager.Domain\MiniUrl.Domain.csproj", "{401B831F-3B11-42CE-BCBA-3005BA9ADF79}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyManager.Domain", "src\KeyManager\KeyManager.Domain\KeyManager.Domain.csproj", "{401B831F-3B11-42CE-BCBA-3005BA9ADF79}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{BA0F94F4-98B7-48DC-943B-FCEC7C3E1B8C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{5900E49B-E5F5-4B5D-8EA9-787D5C781753}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniUrl.KeyManager", "src\KeyManager\MiniUrl.KeyManager\MiniUrl.KeyManager.csproj", "{DBA38783-E532-4484-99E6-9108B2FBB59B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyManager", "src\KeyManager\KeyManager\KeyManager.csproj", "{DBA38783-E532-4484-99E6-9108B2FBB59B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniUrl.KeyManager.UnitTests", "src\KeyManager\MiniUrl.KeyManager.UnitTests\MiniUrl.KeyManager.UnitTests.csproj", "{CEFE8CB2-E009-46BB-9366-24DBB62EFDFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyManager.UnitTests", "src\KeyManager\KeyManager.UnitTests\KeyManager.UnitTests.csproj", "{CEFE8CB2-E009-46BB-9366-24DBB62EFDFB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "KeyManager", "KeyManager", "{FB4BFE70-5825-43CC-9DFA-084684DDDADB}"
 EndProject

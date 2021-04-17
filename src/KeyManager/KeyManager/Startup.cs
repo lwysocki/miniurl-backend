@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MiniUrl.KeyManager.Worker
+namespace MiniUrl.KeyManager
 {
     public class Startup
     {

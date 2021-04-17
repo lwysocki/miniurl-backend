@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\MiniUrl.Domain\MiniUrl.Domain.csproj" />
+    <ProjectReference Include="..\..\src\KeyManager\KeyManager.Domain\KeyManager.Domain.csproj" />
   </ItemGroup>
 
 </Project>

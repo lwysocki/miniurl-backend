@@ -13,7 +13,7 @@ namespace MiniUrl.KeyManager.Utility
         public static string ToJsonString(this JsonDocument jsonDocument)
         {
             var stream = new MemoryStream();
-            Utf8JsonWriter writer = new Utf8JsonWriter(stream);
+            Utf8JsonWriter writer = new(stream);
             jsonDocument.WriteTo(writer);
             writer.Flush();
 
