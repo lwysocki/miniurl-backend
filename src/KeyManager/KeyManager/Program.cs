@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using MiniUrl.KeyManager.Domain;
 using MiniUrl.KeyManager.Domain.Models;
 using MiniUrl.KeyManager.Infrastructure;
+using MiniUrl.KeyManager.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,29 +20,15 @@ namespace MiniUrl.KeyManager
         {
             var host = CreateHostBuilder(args).Build();
 
-            using (var scope = host.Services.CreateScope())
-            using (var context = scope.ServiceProvider.GetService<KeyManagerDbContext>())
+            host.MigrateDbContext<KeyManagerContext>((context, services) =>
             {
-                context.Database.EnsureCreated();
+                var logger = services.GetService<ILogger<KeyManagerContextSeed>>();
+                var keysGenerator = services.GetService<IKeysGenerator>();
 
-                //Restore generator config
-                //Create class responsible for initialization, and rely on keys generator being injected?
-                var keysGenerator = host.Services.GetService<IKeysGenerator>();
-                var keys = keysGenerator.Generate();
-                var keyEntitties = keys.Select(k => new Key(k));
-
-                foreach (var e in keyEntitties)
-                {
-                    context.Keys.Add(e);
-                }
-
-                context.KeyManagerConfigurations.Add(new KeyManagerConfiguration() { Value = keysGenerator.ConfigurationJson });
-
-                context.SaveChanges();
-
-                //Save generator config
-                //Unit of work pattern?
-            }
+                new KeyManagerContextSeed()
+                    .SeedAsync(context, keysGenerator, logger)
+                    .Wait();
+            });
 
             host.Run();
         }

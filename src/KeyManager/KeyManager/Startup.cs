@@ -30,7 +30,7 @@ namespace MiniUrl.KeyManager
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<KeyManagerDbContext>(options =>
+            services.AddDbContext<KeyManagerContext>(options =>
             {
                 //TODO: move to config
                 options.UseNpgsql("Host=localhost;Database=KeyManager;Username=postgres;Password=postgres");

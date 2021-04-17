@@ -22,6 +22,11 @@ namespace MiniUrl.KeyManager.Domain
             {
                 return JsonDocument.Parse(JsonSerializer.Serialize(Configuration));
             }
+
+            set
+            {
+                Configuration = JsonSerializer.Deserialize<KeysGeneratorConfiguration>(value.ToJsonString());
+            }
         }
 
         public KeysGeneratorConfiguration Configuration { get; private set; }
@@ -32,7 +37,7 @@ namespace MiniUrl.KeyManager.Domain
 
         public KeysGenerator(JsonDocument configuration)
         {
-            Configuration = JsonSerializer.Deserialize<KeysGeneratorConfiguration>(configuration.ToJsonString());
+            ConfigurationJson = configuration;
         }
 
         public IList<long> Generate()

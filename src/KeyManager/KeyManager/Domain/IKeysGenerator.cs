@@ -5,7 +5,7 @@ namespace MiniUrl.KeyManager.Domain
 {
     public interface IKeysGenerator
     {
-        JsonDocument ConfigurationJson { get; }
+        JsonDocument ConfigurationJson { get; set; }
 
         IList<long> Generate();
     }

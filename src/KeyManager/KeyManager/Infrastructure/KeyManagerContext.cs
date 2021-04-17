@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace MiniUrl.KeyManager.Infrastructure
 {
-    public class KeyManagerDbContext : DbContext
+    public class KeyManagerContext : DbContext
     {
         public DbSet<KeyManagerConfiguration> KeyManagerConfigurations { get; set; }
         public DbSet<Key> Keys { get; set; }
 
-        public KeyManagerDbContext(DbContextOptions<KeyManagerDbContext> options) : base(options)
+        public KeyManagerContext(DbContextOptions<KeyManagerContext> options) : base(options)
         {
         }
 
