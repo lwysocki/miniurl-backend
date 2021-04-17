@@ -19,7 +19,7 @@ namespace MiniUrl.KeyManager.Infrastructure
 
             await policy.ExecuteAsync(async () =>
             {
-                KeyManagerConfiguration configuration = new KeyManagerConfiguration() { Value = keysGenerator.ConfigurationJson };
+                KeyManagerConfiguration configuration = new() { Value = keysGenerator.ConfigurationJson };
 
                 if (!context.KeyManagerConfigurations.Any())
                 {
@@ -52,7 +52,7 @@ namespace MiniUrl.KeyManager.Infrastructure
             });
         }
 
-        private AsyncRetryPolicy CreatePolicy(ILogger<KeyManagerContextSeed> logger, string prefix, int retries = 3)
+        private static AsyncRetryPolicy CreatePolicy(ILogger<KeyManagerContextSeed> logger, string prefix, int retries = 3)
         {
             return Policy.Handle<NpgsqlException>().
                 WaitAndRetryAsync(

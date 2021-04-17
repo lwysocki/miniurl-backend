@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace MiniUrl.KeyManager.Utility
+namespace MiniUrl.KeyManager.Extensions
 {
     public static class JsonDocumentExtensions
     {

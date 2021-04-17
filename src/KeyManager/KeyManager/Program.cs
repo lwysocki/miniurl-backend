@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 using MiniUrl.KeyManager.Domain;
 using MiniUrl.KeyManager.Domain.Models;
 using MiniUrl.KeyManager.Infrastructure;
-using MiniUrl.KeyManager.Utility;
+using MiniUrl.KeyManager.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;

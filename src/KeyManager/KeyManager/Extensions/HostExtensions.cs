@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using Npgsql;
 using Polly;
 
-namespace MiniUrl.KeyManager.Utility
+namespace MiniUrl.KeyManager.Extensions
 {
     public static class HostExtensions
     {

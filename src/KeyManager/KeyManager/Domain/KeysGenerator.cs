@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-using MiniUrl.KeyManager.Utility;
+using MiniUrl.KeyManager.Extensions;
 
 namespace MiniUrl.KeyManager.Domain
 {
