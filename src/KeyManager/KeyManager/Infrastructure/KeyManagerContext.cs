@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using MiniUrl.KeyManager.Domain.Models;
 using MiniUrl.KeyManager.Infrastructure.EntityConfigurations;
 using System;
@@ -21,6 +22,17 @@ namespace MiniUrl.KeyManager.Infrastructure
         {
             builder.ApplyConfiguration(new KeyEntityTypeConfiguration());
             builder.ApplyConfiguration(new KeyManagerConfigurationEntityTypeConfiguration());
+        }
+    }
+
+    public class KeyManagerDesignFactory : IDesignTimeDbContextFactory<KeyManagerContext>
+    {
+        public KeyManagerContext CreateDbContext(string[] args)
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<KeyManagerContext>()
+                .UseNpgsql("Host=localhost;Database=KeyManager;Username=postgres;Password=postgres");
+
+            return new(optionsBuilder.Options);
         }
     }
 }
