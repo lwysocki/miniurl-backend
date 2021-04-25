@@ -37,7 +37,7 @@ namespace MiniUrl.KeyManager
             });
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MiniUrl.KeyManager.Worker", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MiniUrl.KeyManager", Version = "v1" });
             });
 
             //services.AddSingleton<IKeysGenerator>(new KeysGenerator($"{{\"Iteration\":0,\"Limit\":67645734911,\"Step\":8192}}"));
@@ -51,7 +51,7 @@ namespace MiniUrl.KeyManager
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MiniUrl.KeyManager.Worker v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MiniUrl.KeyManager v1"));
             }
 
             app.UseHttpsRedirection();
