@@ -13,6 +13,7 @@ using MiniUrl.KeyManager.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace MiniUrl.KeyManager
@@ -40,8 +41,8 @@ namespace MiniUrl.KeyManager
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MiniUrl.KeyManager", Version = "v1" });
             });
 
-            //services.AddSingleton<IKeysGenerator>(new KeysGenerator($"{{\"Iteration\":0,\"Limit\":67645734911,\"Step\":8192}}"));
-            services.AddSingleton<IKeysGenerator>(new KeysGenerator($"{{\"Iteration\":0,\"Limit\":10000,\"Step\":100}}"));
+            var keysGeneratorConfig = JsonSerializer.Serialize(Configuration.GetSection("KeysGenerator").Get<Dictionary<string, int>>());
+            services.AddSingleton<IKeysGenerator>(new KeysGenerator(keysGeneratorConfig));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
