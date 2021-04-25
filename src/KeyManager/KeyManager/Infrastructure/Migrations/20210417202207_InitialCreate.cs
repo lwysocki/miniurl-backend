@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace MiniUrl.KeyManager.Migrations
+namespace MiniUrl.KeyManager.Infrastructure.Migrations
 {
     public partial class InitialCreate : Migration
     {

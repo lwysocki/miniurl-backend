@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MiniUrl.KeyManager.Infrastructure;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace MiniUrl.KeyManager.Migrations
+namespace MiniUrl.KeyManager.Infrastructure.Migrations
 {
     [DbContext(typeof(KeyManagerContext))]
     [Migration("20210417202207_InitialCreate")]
