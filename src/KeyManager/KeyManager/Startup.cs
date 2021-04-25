@@ -33,7 +33,7 @@ namespace MiniUrl.KeyManager
             services.AddDbContext<KeyManagerContext>(options =>
             {
                 //TODO: move to config
-                options.UseNpgsql("Host=localhost;Database=KeyManager;Username=postgres;Password=postgres");
+                options.UseNpgsql(Configuration["ConnectionString"]);
             });
             services.AddSwaggerGen(c =>
             {
