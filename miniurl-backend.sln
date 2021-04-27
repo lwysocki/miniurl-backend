@@ -20,6 +20,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyManager.UnitTests", "src
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "KeyManager", "KeyManager", "{FB4BFE70-5825-43CC-9DFA-084684DDDADB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway.Web", "src\ApiGateway.Web\ApiGateway.Web.csproj", "{E384A76F-FC9C-4015-91E0-4DE9065BF1AB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +44,10 @@ Global
 		{CEFE8CB2-E009-46BB-9366-24DBB62EFDFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEFE8CB2-E009-46BB-9366-24DBB62EFDFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEFE8CB2-E009-46BB-9366-24DBB62EFDFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E384A76F-FC9C-4015-91E0-4DE9065BF1AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E384A76F-FC9C-4015-91E0-4DE9065BF1AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E384A76F-FC9C-4015-91E0-4DE9065BF1AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E384A76F-FC9C-4015-91E0-4DE9065BF1AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -52,6 +58,7 @@ Global
 		{DBA38783-E532-4484-99E6-9108B2FBB59B} = {FB4BFE70-5825-43CC-9DFA-084684DDDADB}
 		{CEFE8CB2-E009-46BB-9366-24DBB62EFDFB} = {FB4BFE70-5825-43CC-9DFA-084684DDDADB}
 		{FB4BFE70-5825-43CC-9DFA-084684DDDADB} = {BA0F94F4-98B7-48DC-943B-FCEC7C3E1B8C}
+		{E384A76F-FC9C-4015-91E0-4DE9065BF1AB} = {BA0F94F4-98B7-48DC-943B-FCEC7C3E1B8C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {30D8748F-E3EC-4442-96F7-54563B6FF0EE}
