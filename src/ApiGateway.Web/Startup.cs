@@ -1,4 +1,5 @@
 using ApiGateway.Web.Infrastructure;
+using ApiGateway.Web.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -76,6 +77,10 @@ namespace ApiGateway.Web
         public static IServiceCollection AddGrpcServices(this IServiceCollection services)
         {
             services.AddTransient<GrpcExceptionInterceptor>();
+
+            services.AddScoped<IUrlService, UrlService>();
+
+            services.AddScoped<IAssociationService, AssociationService>();
 
             return services;
         }

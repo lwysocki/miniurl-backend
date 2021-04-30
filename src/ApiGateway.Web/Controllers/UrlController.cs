@@ -1,4 +1,5 @@
 ﻿using ApiGateway.Web.Models;
+using ApiGateway.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,16 +13,42 @@ namespace ApiGateway.Web.Controllers
     [ApiVersion("1.0")]
     public class UrlController : ControllerBase
     {
-        [HttpGet("{id}")]
-        public async Task<ActionResult<UrlAssociationData>> GetUrl(string id)
+        private readonly IUrlService _urlService;
+        private readonly IAssociationService _associationService;
+
+        public UrlController(IUrlService urlService, IAssociationService associationService)
         {
-            return BadRequest();
+            _urlService = urlService;
+            _associationService = associationService;
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UrlAssociationData>> GetUrlAsync(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return BadRequest("Valid id is required");
+            }
+
+            var urlData = await _urlService.GetByIdAsync(id);
+
+            if (urlData == null)
+            {
+                return BadRequest($"Url not found for {id}");
+            }
+
+            return urlData;
         }
 
         [HttpPost]
-        public async Task<ActionResult<UrlAssociationData>> StoreUrlRequest([FromBody] UrlRequest url)
+        public async Task<ActionResult<UrlAssociationData>> AddUrlRequestAsync([FromBody] UrlRequest url)
         {
-            return BadRequest();
+            if (string.IsNullOrWhiteSpace(url.Address))
+            {
+                return BadRequest("Valid url is required");
+            }
+
+            return await _associationService.AddUrlAsync(url);
         }
     }
 }
