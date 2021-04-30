@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GrpcUrl;
 
 namespace ApiGateway.Web
 {
@@ -79,6 +80,11 @@ namespace ApiGateway.Web
             services.AddTransient<GrpcExceptionInterceptor>();
 
             services.AddScoped<IUrlService, UrlService>();
+
+            services.AddGrpcClient<Url.UrlClient>(options =>
+            {
+                options.Address = new Uri("https://localhost:5001");
+            }).AddInterceptor<GrpcExceptionInterceptor>();
 
             services.AddScoped<IAssociationService, AssociationService>();
 
