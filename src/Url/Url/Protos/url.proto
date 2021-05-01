@@ -4,19 +4,15 @@ option csharp_namespace = "GrpcUrl";
 
 package UrlApi;
 
-// The greeting service definition.
 service Url {
-  // Sends a greeting
   rpc GetUrlById (UrlRequest) returns (UrlAssociationReply);
 }
 
-// The request message containing the user's name.
 message UrlRequest {
-  int32 id = 1;
+  string key = 1;
 }
 
-// The response message containing the greetings.
 message UrlAssociationReply {
-  int32 id = 1;
+  string key = 1;
   string address = 2;
 }

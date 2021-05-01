@@ -18,11 +18,11 @@ namespace ApiGateway.Web.Services
 
         public async Task<UrlAssociationData> GetByIdAsync(string id)
         {
-            var response = await _urlClient.GetUrlByIdAsync(new GrpcUrl.UrlRequest { Id = int.Parse(id) });
+            var response = await _urlClient.GetUrlByIdAsync(new GrpcUrl.UrlRequest { Key = id });
 
             var data = new UrlAssociationData()
             {
-                Key = response.Id.ToString(),
+                Key = response.Key,
                 Address = response.Address
             };
 

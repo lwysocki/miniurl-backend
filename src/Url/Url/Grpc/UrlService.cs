@@ -22,7 +22,7 @@ namespace GrpcUrl
             {
                 return new UrlAssociationReply
                 {
-                    Id = request.Id,
+                    Key = request.Key,
                     Address = string.Empty
                 };
             });
