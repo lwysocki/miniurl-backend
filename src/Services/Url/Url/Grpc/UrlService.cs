@@ -16,7 +16,7 @@ namespace GrpcUrl
             _logger = logger;
         }
 
-        public override async Task<UrlAssociationReply> GetUrlById(UrlRequest request, ServerCallContext context)
+        public override async Task<UrlAssociationReply> GetUrlByKey(KeyRequest request, ServerCallContext context)
         {
             var response = await Task.Run(() =>
             {

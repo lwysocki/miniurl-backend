@@ -5,6 +5,6 @@ namespace MiniUrl.ApiGateway.Web.Services
 {
     public interface IUrlService
     {
-        Task<UrlAssociationData> GetByIdAsync(string id);
+        Task<UrlAssociationData> GetByKeyAsync(string key);
     }
 }

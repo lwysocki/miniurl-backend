@@ -16,9 +16,9 @@ namespace MiniUrl.ApiGateway.Web.Services
             _urlClient = urlClient;
         }
 
-        public async Task<UrlAssociationData> GetByIdAsync(string id)
+        public async Task<UrlAssociationData> GetByKeyAsync(string key)
         {
-            var response = await _urlClient.GetUrlByIdAsync(new GrpcUrl.UrlRequest { Key = id });
+            var response = await _urlClient.GetUrlByKeyAsync(new KeyRequest { Key = key });
 
             var data = new UrlAssociationData()
             {

@@ -5,10 +5,10 @@ option csharp_namespace = "GrpcUrl";
 package UrlApi;
 
 service Url {
-  rpc GetUrlById (UrlRequest) returns (UrlAssociationReply);
+  rpc GetUrlByKey (KeyRequest) returns (UrlAssociationReply);
 }
 
-message UrlRequest {
+message KeyRequest {
   string key = 1;
 }
 

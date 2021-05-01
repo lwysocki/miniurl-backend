@@ -11,30 +11,30 @@ namespace MiniUrl.ApiGateway.Web.Controllers
     [ApiController]
     [Route("[controller]")]
     [ApiVersion("1.0")]
-    public class UrlController : ControllerBase
+    public class UrlsController : ControllerBase
     {
         private readonly IUrlService _urlService;
         private readonly IAssociationService _associationService;
 
-        public UrlController(IUrlService urlService, IAssociationService associationService)
+        public UrlsController(IUrlService urlService, IAssociationService associationService)
         {
             _urlService = urlService;
             _associationService = associationService;
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<UrlAssociationData>> GetUrlAsync(string id)
+        [HttpGet("{key}")]
+        public async Task<ActionResult<UrlAssociationData>> GetUrlAsync(string key)
         {
-            if (string.IsNullOrWhiteSpace(id))
+            if (string.IsNullOrWhiteSpace(key))
             {
-                return BadRequest("Valid id is required");
+                return BadRequest("Valid key is required");
             }
 
-            var urlData = await _urlService.GetByIdAsync(id);
+            var urlData = await _urlService.GetByKeyAsync(key);
 
             if (urlData == null)
             {
-                return BadRequest($"Url not found for {id}");
+                return BadRequest($"Url not found for {key}");
             }
 
             return urlData;
