@@ -16,9 +16,17 @@ namespace ApiGateway.Web.Services
             _urlClient = urlClient;
         }
 
-        public Task<UrlAssociationData> GetByIdAsync(string id)
+        public async Task<UrlAssociationData> GetByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            var response = await _urlClient.GetUrlByIdAsync(new GrpcUrl.UrlRequest { Id = int.Parse(id) });
+
+            var data = new UrlAssociationData()
+            {
+                Key = response.Id.ToString(),
+                Address = response.Address
+            };
+
+            return data;
         }
     }
 }

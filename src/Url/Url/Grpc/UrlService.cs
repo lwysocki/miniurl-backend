@@ -16,13 +16,18 @@ namespace GrpcUrl
             _logger = logger;
         }
 
-        public override Task<UrlAssociationReply> GetUrlById(UrlRequest request, ServerCallContext context)
+        public override async Task<UrlAssociationReply> GetUrlById(UrlRequest request, ServerCallContext context)
         {
-            return Task.FromResult(new UrlAssociationReply
+            var response = await Task.Run(() =>
             {
-                Id = request.Id,
-                Address = string.Empty
-            }); ;
+                return new UrlAssociationReply
+                {
+                    Id = request.Id,
+                    Address = string.Empty
+                };
+            });
+
+            return response;
         }
     }
 }

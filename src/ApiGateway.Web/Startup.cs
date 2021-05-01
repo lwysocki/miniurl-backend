@@ -83,7 +83,7 @@ namespace ApiGateway.Web
 
             services.AddGrpcClient<Url.UrlClient>(options =>
             {
-                options.Address = new Uri("https://localhost:5001");
+                options.Address = new Uri("http://localhost:5000");
             }).AddInterceptor<GrpcExceptionInterceptor>();
 
             services.AddScoped<IAssociationService, AssociationService>();
