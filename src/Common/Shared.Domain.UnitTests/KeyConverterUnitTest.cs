@@ -1,9 +1,9 @@
 using System;
 using Xunit;
 
-using MiniUrl.KeyManager.Domain;
+using MiniUrl.Shared.Domain;
 
-namespace MiniUrl.DomainTest
+namespace MiniUrl.Shared.Domain.UnitTests
 {
     public class KeyConverterUnitTest
     {
