@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GrpcUrl;
+using GrpcAssociation;
 
 namespace ApiGateway.Web
 {
@@ -87,6 +88,11 @@ namespace ApiGateway.Web
             }).AddInterceptor<GrpcExceptionInterceptor>();
 
             services.AddScoped<IAssociationService, AssociationService>();
+
+            services.AddGrpcClient<Association.AssociationClient>(options =>
+            {
+                options.Address = new Uri("http://localhost:5000");
+            }).AddInterceptor<GrpcExceptionInterceptor>();
 
             return services;
         }

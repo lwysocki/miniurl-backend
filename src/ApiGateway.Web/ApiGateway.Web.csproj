@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <Protobuf Include="..\Url\Url\Protos\url.proto" GrpcServices="Client" />
+    <Protobuf Include="..\Association\Association\Protos\association.proto" GrpcServices="Client" />
   </ItemGroup>
 
 </Project>
