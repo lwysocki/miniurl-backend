@@ -1,7 +1,7 @@
-﻿using ApiGateway.Web.Models;
+﻿using MiniUrl.ApiGateway.Web.Models;
 using System.Threading.Tasks;
 
-namespace ApiGateway.Web.Services
+namespace MiniUrl.ApiGateway.Web.Services
 {
     public interface IAssociationService
     {

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ApiGateway.Web
+namespace MiniUrl.ApiGateway.Web
 {
     public class Program
     {

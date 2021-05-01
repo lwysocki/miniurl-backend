@@ -1,5 +1,5 @@
-using ApiGateway.Web.Infrastructure;
-using ApiGateway.Web.Services;
+using MiniUrl.ApiGateway.Web.Infrastructure;
+using MiniUrl.ApiGateway.Web.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 using GrpcUrl;
 using GrpcAssociation;
 
-namespace ApiGateway.Web
+namespace MiniUrl.ApiGateway.Web
 {
     public class Startup
     {

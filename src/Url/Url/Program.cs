@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Url
+namespace MiniUrl.Url
 {
     public class Program
     {

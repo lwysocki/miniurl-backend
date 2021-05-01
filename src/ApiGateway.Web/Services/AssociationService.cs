@@ -1,11 +1,11 @@
-﻿using ApiGateway.Web.Models;
+﻿using MiniUrl.ApiGateway.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GrpcAssociation;
 
-namespace ApiGateway.Web.Services
+namespace MiniUrl.ApiGateway.Web.Services
 {
     public class AssociationService : IAssociationService
     {

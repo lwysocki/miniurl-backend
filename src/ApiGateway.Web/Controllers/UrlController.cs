@@ -1,12 +1,12 @@
-﻿using ApiGateway.Web.Models;
-using ApiGateway.Web.Services;
+﻿using MiniUrl.ApiGateway.Web.Models;
+using MiniUrl.ApiGateway.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ApiGateway.Web.Controllers
+namespace MiniUrl.ApiGateway.Web.Controllers
 {
     [ApiController]
     [Route("[controller]")]
