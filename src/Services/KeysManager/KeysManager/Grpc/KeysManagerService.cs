@@ -24,6 +24,7 @@ namespace GrpcKeysManager
         public KeysManagerService(IOptions<KeysManagerSettings> settings, IKeysManagerRepository repository)
         {
             Settings = settings?.Value ?? throw new ArgumentNullException(nameof(settings));
+            _repository = repository;
         }
 
         public override async Task<KeyIdReply> GetAvailableKeyId(KeyIdRequest request, ServerCallContext context)
