@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using MiniUrl.KeyManager.Domain;
+using MiniUrl.KeyManager.Services;
 using MiniUrl.KeyManager.Domain.Models;
 using MiniUrl.KeyManager.Infrastructure;
 using MiniUrl.KeyManager.Extensions;
@@ -23,7 +23,7 @@ namespace MiniUrl.KeyManager
             host.MigrateDbContext<KeyManagerContext>((context, services) =>
             {
                 var logger = services.GetService<ILogger<KeyManagerContextSeed>>();
-                var keysGenerator = services.GetService<IKeysGenerator>();
+                var keysGenerator = services.GetService<IKeysGeneratorService>();
 
                 new KeyManagerContextSeed()
                     .SeedAsync(context, keysGenerator, logger)

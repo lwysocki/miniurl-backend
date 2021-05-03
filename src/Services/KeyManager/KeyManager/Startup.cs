@@ -8,13 +8,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using MiniUrl.KeyManager.Domain;
+using MiniUrl.KeyManager.Services;
 using MiniUrl.KeyManager.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using MiniUrl.KeyManager.Infrastructure.Repositories;
+using MiniUrl.KeyManager.Domain.Models;
+using System.Reflection;
 
 namespace MiniUrl.KeyManager
 {
@@ -33,15 +36,21 @@ namespace MiniUrl.KeyManager
             services.AddControllers();
             services.AddDbContext<KeyManagerContext>(options =>
             {
-                options.UseNpgsql(Configuration["ConnectionString"]);
+                options.UseNpgsql(Configuration["ConnectionString"], npgsqlOptions =>
+                {
+                    npgsqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+                    npgsqlOptions.EnableRetryOnFailure(15, TimeSpan.FromSeconds(30), null);
+                });
             });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MiniUrl.KeyManager", Version = "v1" });
             });
 
-            var keysGeneratorConfig = JsonSerializer.Serialize(Configuration.GetSection("KeysGenerator").Get<Dictionary<string, int>>());
-            services.AddSingleton<IKeysGenerator>(new KeysGenerator(keysGeneratorConfig));
+            services.AddTransient<IKeysServiceRepository, KeysServiceRepository>();
+
+            services.Configure<KeysGeneratorService.KeysGeneratorSettings>(Configuration.GetSection(KeysGeneratorService.KeysGeneratorSettings.Section));
+            services.AddSingleton<IKeysGeneratorService, KeysGeneratorService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

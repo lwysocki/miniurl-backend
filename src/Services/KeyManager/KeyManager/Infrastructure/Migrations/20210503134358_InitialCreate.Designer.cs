@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MiniUrl.KeyManager.Infrastructure.Migrations
 {
     [DbContext(typeof(KeyManagerContext))]
-    [Migration("20210417202207_InitialCreate")]
+    [Migration("20210503134358_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,13 +56,18 @@ namespace MiniUrl.KeyManager.Infrastructure.Migrations
                     b.ToTable("Keys");
                 });
 
-            modelBuilder.Entity("MiniUrl.KeyManager.Domain.Models.KeyManagerConfiguration", b =>
+            modelBuilder.Entity("MiniUrl.KeyManager.Domain.Models.KeyGeneratorConfiguration", b =>
                 {
                     b.HasBaseType("MiniUrl.KeyManager.Domain.Models.Configuration");
 
-                    b.ToTable("Configuration");
+                    b.HasDiscriminator().HasValue("KeyGeneratorConfiguration");
+                });
 
-                    b.HasDiscriminator().HasValue("KeyManagerConfiguration");
+            modelBuilder.Entity("MiniUrl.KeyManager.Domain.Models.KeyServiceConfiguration", b =>
+                {
+                    b.HasBaseType("MiniUrl.KeyManager.Domain.Models.Configuration");
+
+                    b.HasDiscriminator().HasValue("KeyServiceConfiguration");
                 });
 #pragma warning restore 612, 618
         }

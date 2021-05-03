@@ -5,11 +5,9 @@ using System.Threading.Tasks;
 
 namespace MiniUrl.KeyManager.Domain.Models
 {
-    public class KeyManagerConfiguration : Configuration
+    public interface IKeysServiceRepository
     {
-        public KeyManagerConfiguration()
-        {
-            Key = this.GetType().Name;
-        }
+        Task<int> CountAvailableKeys();
+        Task<long> GetAvailableKeyIdAsync(int availableKeysCount);
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
 using MiniUrl.KeyManager.Domain.Models;
 using MiniUrl.KeyManager.Infrastructure.EntityConfigurations;
 using System;
@@ -13,7 +12,8 @@ namespace MiniUrl.KeyManager.Infrastructure
 {
     public class KeyManagerContext : DbContext
     {
-        public DbSet<KeyManagerConfiguration> KeyManagerConfigurations { get; set; }
+        public DbSet<KeyGeneratorConfiguration> KeyGeneratorConfigurations { get; set; }
+        public DbSet<KeyServiceConfiguration> KeyServiceConfigurations { get; set; }
         public DbSet<Key> Keys { get; set; }
 
         public KeyManagerContext(DbContextOptions<KeyManagerContext> options) : base(options)
@@ -23,7 +23,7 @@ namespace MiniUrl.KeyManager.Infrastructure
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfiguration(new KeyEntityTypeConfiguration());
-            builder.ApplyConfiguration(new KeyManagerConfigurationEntityTypeConfiguration());
+            builder.ApplyConfiguration(new ConfigurationEntityTypeConfiguration());
         }
     }
 
@@ -31,14 +31,8 @@ namespace MiniUrl.KeyManager.Infrastructure
     {
         public KeyManagerContext CreateDbContext(string[] args)
         {
-            var config = new ConfigurationBuilder()
-                .SetBasePath(Path.Combine(Directory.GetCurrentDirectory()))
-                .AddJsonFile("appsettings.json")
-                .AddEnvironmentVariables()
-                .Build();
-
             var optionsBuilder = new DbContextOptionsBuilder<KeyManagerContext>()
-                .UseNpgsql(config["ConnectionString"]);
+                .UseNpgsql("Host=localhost;Database=KeyManager;Username=postgres;Password=postgres");
 
             return new(optionsBuilder.Options);
         }

@@ -8,16 +8,15 @@ using System.Threading.Tasks;
 
 namespace MiniUrl.KeyManager.Infrastructure.EntityConfigurations
 {
-    public class KeyManagerConfigurationEntityTypeConfiguration : IEntityTypeConfiguration<KeyManagerConfiguration>
+    public class ConfigurationEntityTypeConfiguration : IEntityTypeConfiguration<Configuration>
     {
-        public void Configure(EntityTypeBuilder<KeyManagerConfiguration> builder)
+        public void Configure(EntityTypeBuilder<Configuration> builder)
         {
             // Todo: define common properties once?
             builder.ToTable(typeof(Configuration).Name);
             builder.HasKey(p => p.Key);
             builder.Property(p => p.Key).ValueGeneratedNever();
             builder.Property(p => p.Value).IsRequired();
-            builder.HasBaseType<Configuration>();
         }
     }
 }
