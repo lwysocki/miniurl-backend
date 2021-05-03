@@ -14,6 +14,7 @@ namespace MiniUrl.KeyManager.Infrastructure
     public class KeyManagerContext : DbContext
     {
         public DbSet<KeyGeneratorConfiguration> KeyGeneratorConfigurations { get; set; }
+        public DbSet<KeyServiceConfiguration> KeyServiceConfigurations { get; set; }
         public DbSet<Key> Keys { get; set; }
 
         public KeyManagerContext(DbContextOptions<KeyManagerContext> options) : base(options)
@@ -23,7 +24,7 @@ namespace MiniUrl.KeyManager.Infrastructure
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfiguration(new KeyEntityTypeConfiguration());
-            builder.ApplyConfiguration(new KeyGeneratorConfigurationEntityTypeConfiguration());
+            builder.ApplyConfiguration(new ConfigurationEntityTypeConfiguration());
         }
     }
 
