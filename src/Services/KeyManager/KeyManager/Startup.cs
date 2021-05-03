@@ -15,6 +15,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using MiniUrl.KeyManager.Infrastructure.Repositories;
+using MiniUrl.KeyManager.Domain.Models;
 
 namespace MiniUrl.KeyManager
 {
@@ -39,6 +41,8 @@ namespace MiniUrl.KeyManager
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MiniUrl.KeyManager", Version = "v1" });
             });
+
+            services.AddTransient<IKeysServiceRepository, KeysServiceRepository>();
 
             var keysGeneratorConfig = JsonSerializer.Serialize(Configuration.GetSection("KeysGenerator").Get<Dictionary<string, int>>());
             services.AddSingleton<IKeysGeneratorService>(new KeysGeneratorService(keysGeneratorConfig));
