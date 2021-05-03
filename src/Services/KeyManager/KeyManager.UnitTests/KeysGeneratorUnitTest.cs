@@ -4,6 +4,7 @@ using System.Linq;
 using Xunit;
 
 using MiniUrl.KeyManager.Services;
+using Microsoft.Extensions.Options;
 
 namespace MiniUrl.KeyManager.UnitTests
 {
@@ -12,10 +13,9 @@ namespace MiniUrl.KeyManager.UnitTests
         [Fact]
         public void KeysGeneratorShouldGenerateCorrectKeys()
         {
-            int keyLimit = 1000;
-            int step = 100;
-            int expectedKeysCount = keyLimit / step;
-            IKeysGeneratorService keysGenerator = new KeysGeneratorService($"{{\"Iteration\":0,\"Limit\":{keyLimit},\"Step\":{step}}}");
+            var settings = new TestKeysGeneratorSettings();
+            long expectedKeysCount = settings.Value.Limit / settings.Value.Step;
+            IKeysGeneratorService keysGenerator = new KeysGeneratorService(settings);
 
             var keys = keysGenerator.Generate();
 
@@ -26,10 +26,9 @@ namespace MiniUrl.KeyManager.UnitTests
         [Fact]
         public void KeyGeneratorGeneratedKeysShouldDependOnIterationGiven()
         {
-            int keyLimit = 1000;
-            int step = 100;
-            int initialIteration = 1;
-            IKeysGeneratorService keysGenerator = new KeysGeneratorService($"{{\"Iteration\":{initialIteration},\"Limit\":{keyLimit},\"Step\":{step}}}");
+            var settings = new TestKeysGeneratorSettings();
+            KeysGeneratorService keysGenerator = new KeysGeneratorService(settings);
+            keysGenerator.Settings.Iteration = 1;
 
             var keysSecondIteration = keysGenerator.Generate();
 
@@ -39,15 +38,16 @@ namespace MiniUrl.KeyManager.UnitTests
         [Fact]
         public void KeyGeneratorShouldGenerateFullRangeOfKeys()
         {
-            int keyLimit = 1000;
-            int step = 100;
-            int iterationCount = step;
-            KeysGeneratorService keysGenerator = new($"{{\"Iteration\":0,\"Limit\":{keyLimit},\"Step\":{step}}}");
+            var settings = new TestKeysGeneratorSettings();
+            int limit = (int)settings.Value.Limit;
+            int step = (int)settings.Value.Step;
+            int iterationCount = (int)settings.Value.Step;
+            KeysGeneratorService keysGenerator = new(settings);
 
-            long[] expectedKeys = new long[keyLimit - 1];
-            long[] generatedKeys = new long[keyLimit - 1];
+            long[] expectedKeys = new long[limit - 1];
+            long[] generatedKeys = new long[limit - 1];
 
-            for (int i = 1; i < keyLimit; i++)
+            for (int i = 1; i < limit; i++)
                 expectedKeys[i - 1] = i;
 
             while (iterationCount > 0)
@@ -58,7 +58,7 @@ namespace MiniUrl.KeyManager.UnitTests
 
                 foreach (var key in keys)
                 {
-                    generatedKeys[keysGenerator.Configuration.Iteration + i] = key;
+                    generatedKeys[keysGenerator.Settings.Iteration + i] = key;
                     i += step;
                 };
             }
@@ -69,10 +69,9 @@ namespace MiniUrl.KeyManager.UnitTests
         [Fact]
         public void KeyGeneratotShallNotGenerateConflictKeys()
         {
-            int keyLimit = 1000;
-            int step = 100;
-            int iterationCount = step;
-            IKeysGeneratorService keysGenerator = new KeysGeneratorService($"{{\"Iteration\":0,\"Limit\":{keyLimit},\"Step\":{step}}}");
+            var settings = new TestKeysGeneratorSettings();
+            int iterationCount = (int)settings.Value.Step;
+            IKeysGeneratorService keysGenerator = new KeysGeneratorService(settings);
 
             Dictionary<long, int> keyCount = new();
 
@@ -92,5 +91,17 @@ namespace MiniUrl.KeyManager.UnitTests
 
             Assert.True(!keyCount.Values.Any(v => v != 1));
         }
+    }
+
+    public class TestKeysGeneratorSettings : IOptionsSnapshot<KeysGeneratorService.KeysGeneratorSettings>
+    {
+        public KeysGeneratorService.KeysGeneratorSettings Value => new KeysGeneratorService.KeysGeneratorSettings()
+        {
+            Iteration = 0,
+            Limit = 1000,
+            Step = 100
+        };
+
+        public KeysGeneratorService.KeysGeneratorSettings Get(string name) => Value;
     }
 }

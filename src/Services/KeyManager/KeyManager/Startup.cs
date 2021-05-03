@@ -49,8 +49,8 @@ namespace MiniUrl.KeyManager
 
             services.AddTransient<IKeysServiceRepository, KeysServiceRepository>();
 
-            var keysGeneratorConfig = JsonSerializer.Serialize(Configuration.GetSection("KeysGenerator").Get<Dictionary<string, int>>());
-            services.AddSingleton<IKeysGeneratorService>(new KeysGeneratorService(keysGeneratorConfig));
+            services.Configure<KeysGeneratorService.KeysGeneratorSettings>(Configuration.GetSection(KeysGeneratorService.KeysGeneratorSettings.Section));
+            services.AddSingleton<IKeysGeneratorService, KeysGeneratorService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
