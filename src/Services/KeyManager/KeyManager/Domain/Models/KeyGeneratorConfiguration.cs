@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace MiniUrl.KeyManager.Domain.Models
 {
-    public class KeyManagerConfiguration : Configuration
+    public class KeyGeneratorConfiguration : Configuration
     {
-        public KeyManagerConfiguration()
+        public KeyGeneratorConfiguration()
         {
-            Key = this.GetType().Name;
+            Key = "KeyManager." + this.GetType().Name;
         }
     }
 }

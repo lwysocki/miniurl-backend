@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace MiniUrl.KeyManager.Infrastructure.EntityConfigurations
 {
-    public class KeyManagerConfigurationEntityTypeConfiguration : IEntityTypeConfiguration<KeyManagerConfiguration>
+    public class KeyGeneratorConfigurationEntityTypeConfiguration : IEntityTypeConfiguration<KeyGeneratorConfiguration>
     {
-        public void Configure(EntityTypeBuilder<KeyManagerConfiguration> builder)
+        public void Configure(EntityTypeBuilder<KeyGeneratorConfiguration> builder)
         {
             // Todo: define common properties once?
             builder.ToTable(typeof(Configuration).Name);

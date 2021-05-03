@@ -19,16 +19,16 @@ namespace MiniUrl.KeyManager.Infrastructure
 
             await policy.ExecuteAsync(async () =>
             {
-                KeyManagerConfiguration configuration = new() { Value = keysGenerator.ConfigurationJson };
+                KeyGeneratorConfiguration configuration = new() { Value = keysGenerator.ConfigurationJson };
 
-                if (!context.KeyManagerConfigurations.Any())
+                if (!context.KeyGeneratorConfigurations.Any())
                 {
-                    await context.KeyManagerConfigurations.AddAsync(configuration);
+                    await context.KeyGeneratorConfigurations.AddAsync(configuration);
                     await context.SaveChangesAsync();
                 }
                 else
                 {
-                    configuration = context.KeyManagerConfigurations.SingleOrDefault();
+                    configuration = context.KeyGeneratorConfigurations.SingleOrDefault();
                     keysGenerator.ConfigurationJson = configuration.Value;
                 }
 
@@ -46,7 +46,7 @@ namespace MiniUrl.KeyManager.Infrastructure
                 if (keysAdded)
                 {
                     configuration.Value = keysGenerator.ConfigurationJson;
-                    context.KeyManagerConfigurations.Update(configuration);
+                    context.KeyGeneratorConfigurations.Update(configuration);
                     await context.SaveChangesAsync();
                 }
             });
