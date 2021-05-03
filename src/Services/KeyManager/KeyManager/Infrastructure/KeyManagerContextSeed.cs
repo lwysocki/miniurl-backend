@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using MiniUrl.KeyManager.Domain;
+using MiniUrl.KeyManager.Services;
 using MiniUrl.KeyManager.Domain.Models;
 using Npgsql;
 using Polly;
@@ -13,7 +13,7 @@ namespace MiniUrl.KeyManager.Infrastructure
 {
     public class KeyManagerContextSeed
     {
-        public async Task SeedAsync(KeyManagerContext context, IKeysGenerator keysGenerator, ILogger<KeyManagerContextSeed> logger)
+        public async Task SeedAsync(KeyManagerContext context, IKeysGeneratorService keysGenerator, ILogger<KeyManagerContextSeed> logger)
         {
             var policy = CreatePolicy(logger, nameof(KeyManagerContextSeed));
 

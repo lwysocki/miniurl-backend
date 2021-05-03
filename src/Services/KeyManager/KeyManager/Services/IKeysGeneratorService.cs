@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json;
 
-namespace MiniUrl.KeyManager.Domain
+namespace MiniUrl.KeyManager.Services
 {
-    public interface IKeysGenerator
+    public interface IKeysGeneratorService
     {
         JsonDocument ConfigurationJson { get; set; }
 

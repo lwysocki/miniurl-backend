@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-using MiniUrl.KeyManager.Domain;
+using MiniUrl.KeyManager.Services;
 
 namespace MiniUrl.KeyManager.UnitTests
 {
@@ -15,7 +15,7 @@ namespace MiniUrl.KeyManager.UnitTests
             int keyLimit = 1000;
             int step = 100;
             int expectedKeysCount = keyLimit / step;
-            IKeysGenerator keysGenerator = new KeysGenerator($"{{\"Iteration\":0,\"Limit\":{keyLimit},\"Step\":{step}}}");
+            IKeysGeneratorService keysGenerator = new KeysGeneratorService($"{{\"Iteration\":0,\"Limit\":{keyLimit},\"Step\":{step}}}");
 
             var keys = keysGenerator.Generate();
 
@@ -29,7 +29,7 @@ namespace MiniUrl.KeyManager.UnitTests
             int keyLimit = 1000;
             int step = 100;
             int initialIteration = 1;
-            IKeysGenerator keysGenerator = new KeysGenerator($"{{\"Iteration\":{initialIteration},\"Limit\":{keyLimit},\"Step\":{step}}}");
+            IKeysGeneratorService keysGenerator = new KeysGeneratorService($"{{\"Iteration\":{initialIteration},\"Limit\":{keyLimit},\"Step\":{step}}}");
 
             var keysSecondIteration = keysGenerator.Generate();
 
@@ -42,7 +42,7 @@ namespace MiniUrl.KeyManager.UnitTests
             int keyLimit = 1000;
             int step = 100;
             int iterationCount = step;
-            KeysGenerator keysGenerator = new($"{{\"Iteration\":0,\"Limit\":{keyLimit},\"Step\":{step}}}");
+            KeysGeneratorService keysGenerator = new($"{{\"Iteration\":0,\"Limit\":{keyLimit},\"Step\":{step}}}");
 
             long[] expectedKeys = new long[keyLimit - 1];
             long[] generatedKeys = new long[keyLimit - 1];
@@ -72,7 +72,7 @@ namespace MiniUrl.KeyManager.UnitTests
             int keyLimit = 1000;
             int step = 100;
             int iterationCount = step;
-            IKeysGenerator keysGenerator = new KeysGenerator($"{{\"Iteration\":0,\"Limit\":{keyLimit},\"Step\":{step}}}");
+            IKeysGeneratorService keysGenerator = new KeysGeneratorService($"{{\"Iteration\":0,\"Limit\":{keyLimit},\"Step\":{step}}}");
 
             Dictionary<long, int> keyCount = new();
 

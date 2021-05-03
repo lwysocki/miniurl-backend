@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 using MiniUrl.KeyManager.Extensions;
 
-namespace MiniUrl.KeyManager.Domain
+namespace MiniUrl.KeyManager.Services
 {
-    public class KeysGenerator : IKeysGenerator
+    public class KeysGeneratorService : IKeysGeneratorService
     {
         public class KeysGeneratorConfiguration
         {
@@ -31,11 +31,11 @@ namespace MiniUrl.KeyManager.Domain
 
         public KeysGeneratorConfiguration Configuration { get; private set; }
 
-        public KeysGenerator(string configuration) : this(JsonDocument.Parse(configuration))
+        public KeysGeneratorService(string configuration) : this(JsonDocument.Parse(configuration))
         {
         }
 
-        public KeysGenerator(JsonDocument configuration)
+        public KeysGeneratorService(JsonDocument configuration)
         {
             ConfigurationJson = configuration;
         }

@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using MiniUrl.KeyManager.Domain;
+using MiniUrl.KeyManager.Services;
 using MiniUrl.KeyManager.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -41,7 +41,7 @@ namespace MiniUrl.KeyManager
             });
 
             var keysGeneratorConfig = JsonSerializer.Serialize(Configuration.GetSection("KeysGenerator").Get<Dictionary<string, int>>());
-            services.AddSingleton<IKeysGenerator>(new KeysGenerator(keysGeneratorConfig));
+            services.AddSingleton<IKeysGeneratorService>(new KeysGeneratorService(keysGeneratorConfig));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
