@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GrpcAssociation;
+using MiniUrl.Shared.Infrastructure;
+using GrpcKeysManager;
 
 namespace MiniUrl.Association
 {
@@ -18,6 +20,7 @@ namespace MiniUrl.Association
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddGrpc();
+            services.AddGrpcServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,6 +42,22 @@ namespace MiniUrl.Association
                     await context.Response.WriteAsync("Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
                 });
             });
+        }
+    }
+
+    public static class ServiceCollectionExtensions
+    {
+
+        public static IServiceCollection AddGrpcServices(this IServiceCollection services)
+        {
+            services.AddTransient<GrpcExceptionInterceptor>();
+
+            services.AddGrpcClient<KeysManager.KeysManagerClient>(options =>
+            {
+                options.Address = new Uri("http://localhost:5000");
+            }).AddInterceptor<GrpcExceptionInterceptor>();
+
+            return services;
         }
     }
 }
