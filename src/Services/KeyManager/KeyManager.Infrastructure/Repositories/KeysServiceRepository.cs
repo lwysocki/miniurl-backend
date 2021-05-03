@@ -25,7 +25,7 @@ namespace MiniUrl.KeyManager.Infrastructure.Repositories
 
         public async Task<long> GetAvailableKeyIdAsync(int availableKeysCount)
         {
-            Random rand = new Random();
+            Random rand = new();
             int rowsCount = rand.Next(availableKeysCount);
 
             var key = await _context.Keys.Where(key => key.State == KeyState.New).OrderBy(key => key.Id).Skip(rowsCount).FirstOrDefaultAsync();

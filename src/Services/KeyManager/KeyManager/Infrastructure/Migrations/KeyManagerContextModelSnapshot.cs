@@ -54,13 +54,18 @@ namespace MiniUrl.KeyManager.Infrastructure.Migrations
                     b.ToTable("Keys");
                 });
 
-            modelBuilder.Entity("MiniUrl.KeyManager.Domain.Models.KeyManagerConfiguration", b =>
+            modelBuilder.Entity("MiniUrl.KeyManager.Domain.Models.KeyGeneratorConfiguration", b =>
                 {
                     b.HasBaseType("MiniUrl.KeyManager.Domain.Models.Configuration");
 
-                    b.ToTable("Configuration");
+                    b.HasDiscriminator().HasValue("KeyGeneratorConfiguration");
+                });
 
-                    b.HasDiscriminator().HasValue("KeyManagerConfiguration");
+            modelBuilder.Entity("MiniUrl.KeyManager.Domain.Models.KeyServiceConfiguration", b =>
+                {
+                    b.HasBaseType("MiniUrl.KeyManager.Domain.Models.Configuration");
+
+                    b.HasDiscriminator().HasValue("KeyServiceConfiguration");
                 });
 #pragma warning restore 612, 618
         }

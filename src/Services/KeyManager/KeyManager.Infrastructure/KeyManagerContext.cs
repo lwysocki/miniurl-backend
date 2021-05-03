@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
 using MiniUrl.KeyManager.Domain.Models;
 using MiniUrl.KeyManager.Infrastructure.EntityConfigurations;
 using System;
@@ -32,14 +31,8 @@ namespace MiniUrl.KeyManager.Infrastructure
     {
         public KeyManagerContext CreateDbContext(string[] args)
         {
-            var config = new ConfigurationBuilder()
-                .SetBasePath(Path.Combine(Directory.GetCurrentDirectory()))
-                .AddJsonFile("appsettings.json")
-                .AddEnvironmentVariables()
-                .Build();
-
             var optionsBuilder = new DbContextOptionsBuilder<KeyManagerContext>()
-                .UseNpgsql(config["ConnectionString"]);
+                .UseNpgsql("Host=localhost;Database=KeyManager;Username=postgres;Password=postgres");
 
             return new(optionsBuilder.Options);
         }

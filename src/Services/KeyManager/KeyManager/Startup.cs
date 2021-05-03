@@ -17,6 +17,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using MiniUrl.KeyManager.Infrastructure.Repositories;
 using MiniUrl.KeyManager.Domain.Models;
+using System.Reflection;
 
 namespace MiniUrl.KeyManager
 {
@@ -35,7 +36,11 @@ namespace MiniUrl.KeyManager
             services.AddControllers();
             services.AddDbContext<KeyManagerContext>(options =>
             {
-                options.UseNpgsql(Configuration["ConnectionString"]);
+                options.UseNpgsql(Configuration["ConnectionString"], npgsqlOptions =>
+                {
+                    npgsqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+                    npgsqlOptions.EnableRetryOnFailure(15, TimeSpan.FromSeconds(30), null);
+                });
             });
             services.AddSwaggerGen(c =>
             {
