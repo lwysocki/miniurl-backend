@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\KeyManager.Domain\KeyManager.Domain.csproj" />
-    <ProjectReference Include="..\KeyManager.Infrastructure\KeyManager.Infrastructure.csproj" />
+    <ProjectReference Include="..\KeysManager.Domain\KeysManager.Domain.csproj" />
+    <ProjectReference Include="..\KeysManager.Infrastructure\KeysManager.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

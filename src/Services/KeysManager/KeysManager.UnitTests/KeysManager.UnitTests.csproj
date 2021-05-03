@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\KeyManager\KeyManager.csproj" />
+    <ProjectReference Include="..\KeysManager\KeysManager.csproj" />
   </ItemGroup>
 
 </Project>
