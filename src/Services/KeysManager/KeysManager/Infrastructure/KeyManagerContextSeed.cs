@@ -32,21 +32,17 @@ namespace MiniUrl.KeyManager.Infrastructure
                     keysGenerator.SettingsJson = configuration.Value;
                 }
 
-                var keys = keysGenerator.Generate();
-                var keyEntities = keys.Select(k => new Key(k));
-                bool keysAdded = false;
-
                 if (!context.Keys.Any())
                 {
+                    var keys = keysGenerator.Generate();
+                    var keyEntities = keys.Select(k => new Key(k));
+
                     await context.Keys.AddRangeAsync(keyEntities);
                     await context.SaveChangesAsync();
-                    keysAdded = !keysAdded;
-                }
 
-                if (keysAdded)
-                {
                     configuration.Value = keysGenerator.SettingsJson;
                     context.KeyGeneratorConfigurations.Update(configuration);
+
                     await context.SaveChangesAsync();
                 }
             });
