@@ -19,7 +19,7 @@ namespace MiniUrl.KeyManager.Infrastructure
 
             await policy.ExecuteAsync(async () =>
             {
-                KeyGeneratorConfiguration configuration = new() { Value = keysGenerator.SettingsJson };
+                KeysGeneratorConfiguration configuration = new() { Value = keysGenerator.SettingsJson };
 
                 if (!context.KeyGeneratorConfigurations.Any())
                 {
