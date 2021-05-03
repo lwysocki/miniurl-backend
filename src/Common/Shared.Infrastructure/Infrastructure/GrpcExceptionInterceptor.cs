@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MiniUrl.ApiGateway.Web.Infrastructure
+namespace MiniUrl.Shared.Infrastructure
 {
     public class GrpcExceptionInterceptor : Interceptor
     {

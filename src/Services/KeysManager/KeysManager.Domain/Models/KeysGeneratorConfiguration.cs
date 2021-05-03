@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace MiniUrl.KeyManager.Domain.Models
 {
-    public class KeyServiceConfiguration : Configuration
+    public class KeysGeneratorConfiguration : Configuration
     {
-        public KeyServiceConfiguration()
+        public KeysGeneratorConfiguration()
         {
             Key = "KeyManager." + this.GetType().Name;
         }

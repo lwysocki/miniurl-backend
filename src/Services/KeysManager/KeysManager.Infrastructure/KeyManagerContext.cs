@@ -12,8 +12,7 @@ namespace MiniUrl.KeyManager.Infrastructure
 {
     public class KeyManagerContext : DbContext
     {
-        public DbSet<KeyGeneratorConfiguration> KeyGeneratorConfigurations { get; set; }
-        public DbSet<KeyServiceConfiguration> KeyServiceConfigurations { get; set; }
+        public DbSet<KeysGeneratorConfiguration> KeyGeneratorConfigurations { get; set; }
         public DbSet<Key> Keys { get; set; }
 
         public KeyManagerContext(DbContextOptions<KeyManagerContext> options) : base(options)

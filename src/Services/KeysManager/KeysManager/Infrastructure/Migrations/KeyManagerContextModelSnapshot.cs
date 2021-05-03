@@ -2,7 +2,6 @@
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MiniUrl.KeyManager.Infrastructure;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -10,10 +9,9 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MiniUrl.KeyManager.Infrastructure.Migrations
 {
     [DbContext(typeof(KeyManagerContext))]
-    [Migration("20210503134358_InitialCreate")]
-    partial class InitialCreate
+    partial class KeyManagerContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,18 +54,11 @@ namespace MiniUrl.KeyManager.Infrastructure.Migrations
                     b.ToTable("Keys");
                 });
 
-            modelBuilder.Entity("MiniUrl.KeyManager.Domain.Models.KeyGeneratorConfiguration", b =>
+            modelBuilder.Entity("MiniUrl.KeyManager.Domain.Models.KeysGeneratorConfiguration", b =>
                 {
                     b.HasBaseType("MiniUrl.KeyManager.Domain.Models.Configuration");
 
-                    b.HasDiscriminator().HasValue("KeyGeneratorConfiguration");
-                });
-
-            modelBuilder.Entity("MiniUrl.KeyManager.Domain.Models.KeyServiceConfiguration", b =>
-                {
-                    b.HasBaseType("MiniUrl.KeyManager.Domain.Models.Configuration");
-
-                    b.HasDiscriminator().HasValue("KeyServiceConfiguration");
+                    b.HasDiscriminator().HasValue("KeysGeneratorConfiguration");
                 });
 #pragma warning restore 612, 618
         }
