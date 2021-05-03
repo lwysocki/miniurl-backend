@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MiniUrl.KeyManager.Infrastructure.Repositories
 {
-    public class KeysServiceRepository : IKeysServiceRepository
+    public class KeysManagerRepository : IKeysManagerRepository
     {
         private readonly KeyManagerContext _context;
 
-        public KeysServiceRepository(KeyManagerContext context)
+        public KeysManagerRepository(KeyManagerContext context)
         {
             _context = context;
         }
@@ -23,18 +23,15 @@ namespace MiniUrl.KeyManager.Infrastructure.Repositories
             return keysCount;
         }
 
-        public async Task<long> GetAvailableKeyIdAsync(int availableKeysCount)
+        public async Task<Key> GetAvailableKeyAsync(int skipRowsCount)
         {
-            Random rand = new();
-            int rowsCount = rand.Next(availableKeysCount);
-
-            var key = await _context.Keys.Where(key => key.State == KeyState.New).OrderBy(key => key.Id).Skip(rowsCount).FirstOrDefaultAsync();
+            var key = await _context.Keys.Where(key => key.State == KeyState.New).OrderBy(key => key.Id).Skip(skipRowsCount).FirstOrDefaultAsync();
             key.State = KeyState.Reserved;
 
             _context.Keys.Update(key);
             await _context.SaveChangesAsync();
 
-            return key.Id;
+            return key;
         }
     }
 }

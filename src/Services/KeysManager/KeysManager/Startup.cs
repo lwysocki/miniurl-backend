@@ -47,7 +47,10 @@ namespace MiniUrl.KeyManager
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MiniUrl.KeyManager", Version = "v1" });
             });
 
-            services.AddTransient<IKeysServiceRepository, KeysServiceRepository>();
+            services.AddTransient<IKeysManagerRepository, KeysManagerRepository>();
+
+            services.Configure<KeysManagerService.KeysManagerSettings>(Configuration.GetSection(KeysManagerService.KeysManagerSettings.Section));
+            services.AddTransient<IKeysManagerService, KeysManagerService>();
 
             services.Configure<KeysGeneratorService.KeysGeneratorSettings>(Configuration.GetSection(KeysGeneratorService.KeysGeneratorSettings.Section));
             services.AddSingleton<IKeysGeneratorService, KeysGeneratorService>();
