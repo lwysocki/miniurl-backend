@@ -54,7 +54,7 @@ namespace MiniUrl.Association
 
             services.AddGrpcClient<KeysManager.KeysManagerClient>(options =>
             {
-                options.Address = new Uri("http://localhost:5000");
+                options.Address = new Uri("http://localhost:5020");
             }).AddInterceptor<GrpcExceptionInterceptor>();
 
             return services;
