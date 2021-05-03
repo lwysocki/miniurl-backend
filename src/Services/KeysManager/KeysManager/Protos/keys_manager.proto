@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcKeysManager";
+
+package KeysManagerApi;
+
+service KeysManager {
+	rpc GetAvailableKeyId (KeyIdRequest) returns (KeyIdReply);
+}
+
+message KeyIdRequest {}
+
+message KeyIdReply {
+	int64 id = 1;
+}

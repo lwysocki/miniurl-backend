@@ -1,3 +1,4 @@
+using GrpcKeysManager;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -26,7 +27,7 @@ namespace MiniUrl.KeyManager
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddGrpc();
             services.AddDbContext<KeyManagerContext>(options =>
             {
                 options.UseNpgsql(Configuration["ConnectionString"], npgsqlOptions =>
@@ -39,7 +40,7 @@ namespace MiniUrl.KeyManager
             services.AddTransient<IKeysManagerRepository, KeysManagerRepository>();
 
             services.Configure<KeysManagerService.KeysManagerSettings>(Configuration.GetSection(KeysManagerService.KeysManagerSettings.Section));
-            services.AddTransient<IKeysManagerService, KeysManagerService>();
+            //services.AddTransient<IKeysManagerService, KeysManagerService>();
 
             services.Configure<KeysGeneratorService.KeysGeneratorSettings>(Configuration.GetSection(KeysGeneratorService.KeysGeneratorSettings.Section));
             services.AddSingleton<IKeysGeneratorService, KeysGeneratorService>();
@@ -57,6 +58,8 @@ namespace MiniUrl.KeyManager
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapGrpcService<KeysManagerService>();
+
                 endpoints.MapGet("/", async context =>
                 {
                     await context.Response.WriteAsync("Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");

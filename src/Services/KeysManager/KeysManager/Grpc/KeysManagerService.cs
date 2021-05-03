@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Grpc.Core;
+using Microsoft.Extensions.Options;
 using MiniUrl.KeyManager.Domain.Models;
 using System;
 using System.Collections.Generic;
@@ -6,9 +7,9 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace MiniUrl.KeyManager.Services
+namespace GrpcKeysManager
 {
-    public class KeysManagerService : IKeysManagerService
+    public class KeysManagerService : KeysManager.KeysManagerBase
     {
         public class KeysManagerSettings
         {
@@ -25,7 +26,7 @@ namespace MiniUrl.KeyManager.Services
             Settings = settings?.Value ?? throw new ArgumentNullException(nameof(settings));
         }
 
-        public async Task<long> GetAvailableKeyIdAsync()
+        public override async Task<KeyIdReply> GetAvailableKeyId(KeyIdRequest request, ServerCallContext context)
         {
             var keysCount = await _repository.CountAvailableKeys();
 
@@ -34,7 +35,7 @@ namespace MiniUrl.KeyManager.Services
 
             var key = await _repository.GetAvailableKeyAsync(skipRowsCount);
 
-            return key.Id;
+            return new KeyIdReply() { Id = key.Id };
         }
     }
 }
