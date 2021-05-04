@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using MiniUrl.Association.Extensions;
+using MiniUrl.Association.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,7 +14,11 @@ namespace MiniUrl.Association
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            var host = CreateHostBuilder(args).Build();
+
+            host.MigrateDbContext<AssociationContext>((context, services) => { });
+
+            host.Run();
         }
 
         // Additional configuration is required to successfully run gRPC on macOS.
