@@ -14,6 +14,7 @@ using MiniUrl.Association.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using MiniUrl.Shared.Domain;
 
 namespace MiniUrl.Association
 {
@@ -42,6 +43,9 @@ namespace MiniUrl.Association
             });
 
             services.AddGrpcServices();
+
+            services.Configure<KeyConverter.KeyConverterSettings>(Configuration.GetSection(KeyConverter.KeyConverterSettings.Section));
+            services.AddTransient<IKeyConverter, KeyConverter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

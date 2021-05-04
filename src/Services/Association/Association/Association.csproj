@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\Shared.Domain\Shared.Domain.csproj" />
     <ProjectReference Include="..\..\..\Common\Shared.Infrastructure\Shared.Infrastructure.csproj" />
     <ProjectReference Include="..\Association.Infrastructure\Association.Infrastructure.csproj" />
   </ItemGroup>
