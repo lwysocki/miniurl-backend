@@ -1,9 +1,17 @@
-﻿using System;
+﻿using Microsoft.Extensions.Options;
+using System;
 
 namespace MiniUrl.Shared.Domain
 {
     public class KeyConverter : IKeyConverter
     {
+        public class KeyConverterSettings
+        {
+            public const string Section = "KeyConverter";
+
+            public int KeyOrder { get; set; }
+        }
+
         private static readonly string _alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_";
 
         public int AlphabetSize
@@ -13,8 +21,9 @@ namespace MiniUrl.Shared.Domain
 
         private readonly long _offset;
 
-        public KeyConverter(int keyOrder)
+        public KeyConverter(IOptions<KeyConverterSettings> settings)
         {
+            var keyOrder = settings?.Value.KeyOrder ?? throw new ArgumentNullException(nameof(settings));
             _offset = (long)Math.Pow(AlphabetSize, keyOrder - 1);
         }
 
