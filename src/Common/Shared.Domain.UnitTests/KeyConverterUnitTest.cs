@@ -41,7 +41,7 @@ namespace MiniUrl.Shared.Domain.UnitTests
 
     class TestKeyConverterSettings : IOptionsSnapshot<KeyConverter.KeyConverterSettings>
     {
-        public KeyConverter.KeyConverterSettings Value => new KeyConverter.KeyConverterSettings()
+        public KeyConverter.KeyConverterSettings Value => new()
         {
             KeyOrder = 6
         };
