@@ -1,20 +1,17 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using GrpcAssociation;
+using GrpcKeysManager;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using GrpcAssociation;
-using MiniUrl.Shared.Infrastructure;
-using GrpcKeysManager;
 using MiniUrl.Association.Infrastructure;
-using Microsoft.Extensions.Configuration;
-using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 using MiniUrl.Shared.Domain;
+using MiniUrl.Shared.Infrastructure;
+using System;
+using System.Reflection;
 
 namespace MiniUrl.Association
 {

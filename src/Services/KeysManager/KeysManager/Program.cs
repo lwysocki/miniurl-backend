@@ -1,16 +1,10 @@
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using MiniUrl.KeyManager.Services;
-using MiniUrl.KeyManager.Domain.Models;
-using MiniUrl.KeyManager.Infrastructure;
 using MiniUrl.KeyManager.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using MiniUrl.KeyManager.Infrastructure;
+using MiniUrl.KeyManager.Services;
 
 namespace MiniUrl.KeyManager
 {

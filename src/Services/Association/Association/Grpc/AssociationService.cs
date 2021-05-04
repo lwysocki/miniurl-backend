@@ -1,13 +1,10 @@
 using Grpc.Core;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using GrpcKeysManager;
-using MiniUrl.Association.Infrastructure;
+using Microsoft.Extensions.Logging;
 using MiniUrl.Association.Domain.Model;
+using MiniUrl.Association.Infrastructure;
 using MiniUrl.Shared.Domain;
+using System.Threading.Tasks;
 
 namespace GrpcAssociation
 {
@@ -34,7 +31,7 @@ namespace GrpcAssociation
         {
             var reply = await _keysManagerClient.GetAvailableKeyIdAsync(new KeyIdRequest());
 
-            await _associationContext.AddAsync<Address>(new (reply.Id, request.Address));
+            await _associationContext.AddAsync<Address>(new(reply.Id, request.Address));
             await _associationContext.SaveChangesAsync();
 
             return new UrlAssociationReply

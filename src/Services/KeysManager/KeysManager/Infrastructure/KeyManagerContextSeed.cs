@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using MiniUrl.KeyManager.Services;
+﻿using Microsoft.Extensions.Logging;
 using MiniUrl.KeyManager.Domain.Models;
+using MiniUrl.KeyManager.Services;
 using Npgsql;
 using Polly;
 using Polly.Retry;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MiniUrl.KeyManager.Infrastructure
 {

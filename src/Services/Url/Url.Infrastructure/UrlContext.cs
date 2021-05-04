@@ -2,11 +2,6 @@
 using Microsoft.EntityFrameworkCore.Design;
 using MiniUrl.Url.Domain.Model;
 using MiniUrl.Url.Infrastructure.EntityConfigurations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MiniUrl.Url.Infrastructure
 {

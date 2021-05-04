@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace MiniUrl.Shared.Domain
+﻿namespace MiniUrl.Shared.Domain
 {
     public interface IKeyConverter
     {

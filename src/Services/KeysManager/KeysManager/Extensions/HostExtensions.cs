@@ -1,12 +1,10 @@
-﻿using System;
-
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-
 using Npgsql;
 using Polly;
+using System;
 
 namespace MiniUrl.KeyManager.Extensions
 {

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MiniUrl.Association.Domain.Model
+﻿namespace MiniUrl.Association.Domain.Model
 {
     public class Address
     {

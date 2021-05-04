@@ -6,13 +6,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MiniUrl.Shared.Domain;
 using MiniUrl.Url.Infrastructure;
 using System;
 using System.Reflection;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MiniUrl.Shared.Domain;
 
 namespace MiniUrl.Url
 {
