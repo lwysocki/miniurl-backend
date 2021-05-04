@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MiniUrl.Shared.Domain;
 
 namespace MiniUrl.Url
 {
@@ -38,6 +39,9 @@ namespace MiniUrl.Url
                     npgsqlOptions.EnableRetryOnFailure(15, TimeSpan.FromSeconds(30), null);
                 });
             });
+
+            services.Configure<KeyConverter.KeyConverterSettings>(Configuration.GetSection(KeyConverter.KeyConverterSettings.Section));
+            services.AddTransient<IKeyConverter, KeyConverter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
