@@ -79,7 +79,7 @@ namespace MiniUrl.ApiGateway.Web
 
             services.AddGrpcClient<Url.UrlClient>(options =>
             {
-                options.Address = new Uri("http://localhost:5000");
+                options.Address = new Uri("http://localhost:5010");
             }).AddInterceptor<GrpcExceptionInterceptor>();
 
             services.AddScoped<IAssociationService, AssociationService>();
