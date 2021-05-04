@@ -1,9 +1,7 @@
-﻿using MiniUrl.KeyManager.Domain.Models;
-using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using MiniUrl.KeyManager.Domain.Models;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 
 namespace MiniUrl.KeyManager.Infrastructure.Repositories
 {

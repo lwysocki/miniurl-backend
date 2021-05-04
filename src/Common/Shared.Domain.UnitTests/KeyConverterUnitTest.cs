@@ -1,8 +1,6 @@
+using Microsoft.Extensions.Options;
 using System;
 using Xunit;
-
-using MiniUrl.Shared.Domain;
-using Microsoft.Extensions.Options;
 
 namespace MiniUrl.Shared.Domain.UnitTests
 {

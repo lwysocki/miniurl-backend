@@ -1,10 +1,8 @@
-using System;
+using Microsoft.Extensions.Options;
+using MiniUrl.KeyManager.Services;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
-
-using MiniUrl.KeyManager.Services;
-using Microsoft.Extensions.Options;
 
 namespace MiniUrl.KeyManager.UnitTests
 {

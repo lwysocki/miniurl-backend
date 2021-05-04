@@ -2,11 +2,6 @@
 using Microsoft.EntityFrameworkCore.Design;
 using MiniUrl.KeyManager.Domain.Models;
 using MiniUrl.KeyManager.Infrastructure.EntityConfigurations;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MiniUrl.KeyManager.Infrastructure
 {

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using MiniUrl.KeyManager.Extensions;
+using System;
+using System.Collections.Generic;
+using System.Text.Json;
 
 namespace MiniUrl.KeyManager.Services
 {
@@ -19,7 +17,8 @@ namespace MiniUrl.KeyManager.Services
             public long Step { get; set; }
         }
 
-        public JsonDocument SettingsJson {
+        public JsonDocument SettingsJson
+        {
             get
             {
                 return JsonDocument.Parse(JsonSerializer.Serialize(Settings));

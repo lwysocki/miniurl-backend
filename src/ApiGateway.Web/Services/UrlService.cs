@@ -1,9 +1,6 @@
-﻿using MiniUrl.ApiGateway.Web.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using GrpcUrl;
+using MiniUrl.ApiGateway.Web.Models;
 using System.Threading.Tasks;
-using GrpcUrl;
 
 namespace MiniUrl.ApiGateway.Web.Services
 {
