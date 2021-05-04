@@ -10,7 +10,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Grpc.AspNetCore" Version="2.34.0" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.37.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\Shared.Domain\Shared.Domain.csproj" />
+    <ProjectReference Include="..\Url.Infrastructure\Url.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
