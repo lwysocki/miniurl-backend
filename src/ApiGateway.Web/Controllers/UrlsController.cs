@@ -34,7 +34,7 @@ namespace MiniUrl.ApiGateway.Web.Controllers
                 return BadRequest($"Url not found for {key}");
             }
 
-            return urlData;
+            return Redirect(urlData.Address);
         }
 
         [HttpPost]

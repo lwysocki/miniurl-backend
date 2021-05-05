@@ -31,7 +31,12 @@ namespace GrpcAssociation
         {
             var reply = await _keysManagerClient.GetAvailableKeyIdAsync(new KeyIdRequest());
 
-            await _associationContext.AddAsync<Address>(new(reply.Id, request.Address));
+            var address = request.Address;
+
+            if (!address.StartsWith("http://") && !address.StartsWith("https://"))
+                address = "http://" + address;
+
+            await _associationContext.AddAsync<Address>(new(reply.Id, address));
             await _associationContext.SaveChangesAsync();
 
             return new UrlAssociationReply
