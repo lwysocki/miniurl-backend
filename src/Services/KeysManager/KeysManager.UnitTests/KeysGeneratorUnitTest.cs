@@ -25,7 +25,7 @@ namespace MiniUrl.KeyManager.UnitTests
         public void KeyGeneratorGeneratedKeysShouldDependOnIterationGiven()
         {
             var settings = new TestKeysGeneratorSettings();
-            KeysGeneratorService keysGenerator = new KeysGeneratorService(settings);
+            KeysGeneratorService keysGenerator = new(settings);
             keysGenerator.Settings.Iteration = 1;
 
             var keysSecondIteration = keysGenerator.Generate();
@@ -93,7 +93,7 @@ namespace MiniUrl.KeyManager.UnitTests
 
     public class TestKeysGeneratorSettings : IOptionsSnapshot<KeysGeneratorService.KeysGeneratorSettings>
     {
-        public KeysGeneratorService.KeysGeneratorSettings Value => new KeysGeneratorService.KeysGeneratorSettings()
+        public KeysGeneratorService.KeysGeneratorSettings Value => new()
         {
             Iteration = 0,
             Limit = 1000,
