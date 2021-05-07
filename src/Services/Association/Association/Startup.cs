@@ -7,7 +7,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using MiniUrl.Association.Infrastructure;
+using MiniUrl.Association.Settings;
 using MiniUrl.Shared.Domain;
 using MiniUrl.Shared.Infrastructure;
 using System;
@@ -74,9 +76,10 @@ namespace MiniUrl.Association
         {
             services.AddTransient<GrpcExceptionInterceptor>();
 
-            services.AddGrpcClient<KeysManager.KeysManagerClient>(options =>
+            services.AddGrpcClient<KeysManager.KeysManagerClient>((services, options) =>
             {
-                options.Address = new Uri("http://localhost:5020");
+                var keysManagerServiceUrl = services.GetRequiredService<IOptions<GrpcUrls>>().Value.KeysManagerService;
+                options.Address = new Uri(keysManagerServiceUrl);
             }).AddInterceptor<GrpcExceptionInterceptor>();
 
             return services;

@@ -20,6 +20,16 @@ namespace MiniUrl.Association
         // For instructions on how to configure Kestrel and gRPC clients on macOS, visit https://go.microsoft.com/fwlink/?linkid=2099682
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration(builder =>
+                {
+                    var sources = builder.Sources;
+                    sources.Insert(3, new Microsoft.Extensions.Configuration.Json.JsonConfigurationSource()
+                    {
+                        Optional = true,
+                        Path = "appsettings.localhost.json",
+                        ReloadOnChange = false
+                    });
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
