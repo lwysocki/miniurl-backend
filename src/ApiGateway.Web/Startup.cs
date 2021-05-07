@@ -6,8 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using MiniUrl.ApiGateway.Web.Services;
+using MiniUrl.ApiGateway.Web.Settings;
 using MiniUrl.Shared.Infrastructure;
 using System;
 
@@ -15,16 +17,18 @@ namespace MiniUrl.ApiGateway.Web
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<GrpcUrls>(Configuration.GetSection(GrpcUrls.Section));
+
             services.AddMvcServices()
                 .AddGrpcServices();
         }
@@ -77,16 +81,18 @@ namespace MiniUrl.ApiGateway.Web
 
             services.AddScoped<IUrlService, UrlService>();
 
-            services.AddGrpcClient<Url.UrlClient>(options =>
+            services.AddGrpcClient<Url.UrlClient>((services, options) =>
             {
-                options.Address = new Uri("http://localhost:5010");
+                var urlServiceUrl = services.GetRequiredService<IOptions<GrpcUrls>>().Value.UrlService;
+                options.Address = new Uri(urlServiceUrl);
             }).AddInterceptor<GrpcExceptionInterceptor>();
 
             services.AddScoped<IAssociationService, AssociationService>();
 
-            services.AddGrpcClient<Association.AssociationClient>(options =>
+            services.AddGrpcClient<Association.AssociationClient>((services, options) =>
             {
-                options.Address = new Uri("http://localhost:5000");
+                var associationServiceUrl = services.GetRequiredService<IOptions<GrpcUrls>>().Value.UrlService;
+                options.Address = new Uri(associationServiceUrl);
             }).AddInterceptor<GrpcExceptionInterceptor>();
 
             return services;

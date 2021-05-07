@@ -40,7 +40,6 @@ namespace MiniUrl.KeyManager
             services.AddTransient<IKeysManagerRepository, KeysManagerRepository>();
 
             services.Configure<KeysManagerService.KeysManagerSettings>(Configuration.GetSection(KeysManagerService.KeysManagerSettings.Section));
-            //services.AddTransient<IKeysManagerService, KeysManagerService>();
 
             services.Configure<KeysGeneratorService.KeysGeneratorSettings>(Configuration.GetSection(KeysGeneratorService.KeysGeneratorSettings.Section));
             services.AddSingleton<IKeysGeneratorService, KeysGeneratorService>();
