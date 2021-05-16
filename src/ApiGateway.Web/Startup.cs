@@ -91,7 +91,7 @@ namespace MiniUrl.ApiGateway.Web
 
             services.AddGrpcClient<Association.AssociationClient>((services, options) =>
             {
-                var associationServiceUrl = services.GetRequiredService<IOptions<GrpcUrls>>().Value.UrlService;
+                var associationServiceUrl = services.GetRequiredService<IOptions<GrpcUrls>>().Value.AssociationService;
                 options.Address = new Uri(associationServiceUrl);
             }).AddInterceptor<GrpcExceptionInterceptor>();
 

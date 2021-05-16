@@ -1,0 +1,29 @@
+version: '3.4'
+
+services:
+  sqldb:
+    image: postgres
+
+  keysmanager:
+    image: ${DOCKER_REGISTRY-}keysmanager
+    build:
+      context: .
+      dockerfile: src/Services/KeysManager/KeysManager/Dockerfile
+
+  association:
+    image: ${DOCKER_REGISTRY-}association
+    build:
+      context: .
+      dockerfile: src/Services/Association/Association/Dockerfile
+
+  url:
+    image: ${DOCKER_REGISTRY-}url
+    build:
+      context: .
+      dockerfile: src/Services/Url/Url/Dockerfile
+
+  apigateway.web:
+    image: ${DOCKER_REGISTRY-}apigatewayweb
+    build:
+      context: .
+      dockerfile: src/ApiGateway.Web/Dockerfile
