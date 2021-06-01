@@ -6,7 +6,7 @@ using Npgsql;
 using Polly;
 using System;
 
-namespace MiniUrl.KeyManager.Extensions
+namespace MiniUrl.Shared.WebHost.Extensions
 {
     public static class HostExtensions
     {

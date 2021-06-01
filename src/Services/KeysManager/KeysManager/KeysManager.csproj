@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\Shared.WebHost\Shared.WebHost.csproj" />
     <ProjectReference Include="..\KeysManager.Domain\KeysManager.Domain.csproj" />
     <ProjectReference Include="..\KeysManager.Infrastructure\KeysManager.Infrastructure.csproj" />
   </ItemGroup>

@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using MiniUrl.Association.Extensions;
 using MiniUrl.Association.Infrastructure;
+using MiniUrl.Shared.WebHost.Extensions;
 using System.IO;
 using System.Net;
 

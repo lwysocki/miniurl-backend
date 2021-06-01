@@ -5,9 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using MiniUrl.KeyManager.Extensions;
 using MiniUrl.KeyManager.Infrastructure;
 using MiniUrl.KeyManager.Services;
+using MiniUrl.Shared.WebHost.Extensions;
 using System.IO;
 using System.Net;
 

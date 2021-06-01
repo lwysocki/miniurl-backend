@@ -29,6 +29,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\Shared.Domain\Shared.Domain.csproj" />
     <ProjectReference Include="..\..\..\Common\Shared.Infrastructure\Shared.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\Common\Shared.WebHost\Shared.WebHost.csproj" />
     <ProjectReference Include="..\Association.Infrastructure\Association.Infrastructure.csproj" />
   </ItemGroup>
 
