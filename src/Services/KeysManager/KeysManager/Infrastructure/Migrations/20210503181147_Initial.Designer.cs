@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace MiniUrl.KeyManager.Infrastructure.Migrations
 {
-    [DbContext(typeof(KeyManagerContext))]
+    [DbContext(typeof(KeysManagerContext))]
     [Migration("20210503181147_Initial")]
     partial class Initial
     {

@@ -7,9 +7,9 @@ namespace MiniUrl.KeyManager.Infrastructure.Repositories
 {
     public class KeysManagerRepository : IKeysManagerRepository
     {
-        private readonly KeyManagerContext _context;
+        private readonly KeysManagerContext _context;
 
-        public KeysManagerRepository(KeyManagerContext context)
+        public KeysManagerRepository(KeysManagerContext context)
         {
             _context = context;
         }

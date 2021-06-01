@@ -20,7 +20,7 @@ namespace MiniUrl.KeyManager
             var configuration = GetConfiguration();
             var host = CreateWebHostBuilder(args, configuration).Build();
 
-            host.MigrateDbContext<KeyManagerContext>((context, services) =>
+            host.MigrateDbContext<KeysManagerContext>((context, services) =>
             {
                 var logger = services.GetService<ILogger<KeyManagerContextSeed>>();
                 var keysGenerator = services.GetService<IKeysGeneratorService>();

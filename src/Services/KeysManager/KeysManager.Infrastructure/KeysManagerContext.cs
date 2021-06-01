@@ -5,12 +5,12 @@ using MiniUrl.KeyManager.Infrastructure.EntityConfigurations;
 
 namespace MiniUrl.KeyManager.Infrastructure
 {
-    public class KeyManagerContext : DbContext
+    public class KeysManagerContext : DbContext
     {
         public DbSet<KeysGeneratorConfiguration> KeyGeneratorConfigurations { get; set; }
         public DbSet<Key> Keys { get; set; }
 
-        public KeyManagerContext(DbContextOptions<KeyManagerContext> options) : base(options)
+        public KeysManagerContext(DbContextOptions<KeysManagerContext> options) : base(options)
         {
         }
 
@@ -21,11 +21,11 @@ namespace MiniUrl.KeyManager.Infrastructure
         }
     }
 
-    public class KeyManagerDesignFactory : IDesignTimeDbContextFactory<KeyManagerContext>
+    public class KeyManagerDesignFactory : IDesignTimeDbContextFactory<KeysManagerContext>
     {
-        public KeyManagerContext CreateDbContext(string[] args)
+        public KeysManagerContext CreateDbContext(string[] args)
         {
-            var optionsBuilder = new DbContextOptionsBuilder<KeyManagerContext>()
+            var optionsBuilder = new DbContextOptionsBuilder<KeysManagerContext>()
                 .UseNpgsql("Host=localhost;Database=KeyManager;Username=postgres;Password=postgres");
 
             return new(optionsBuilder.Options);
