@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace MiniUrl.KeyManager.Infrastructure.Migrations
 {
-    [DbContext(typeof(KeyManagerContext))]
+    [DbContext(typeof(KeysManagerContext))]
     partial class KeyManagerContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

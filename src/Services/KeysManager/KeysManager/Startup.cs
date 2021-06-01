@@ -28,7 +28,7 @@ namespace MiniUrl.KeyManager
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddGrpc();
-            services.AddDbContext<KeyManagerContext>(options =>
+            services.AddDbContext<KeysManagerContext>(options =>
             {
                 options.UseNpgsql(Configuration["ConnectionString"], npgsqlOptions =>
                 {

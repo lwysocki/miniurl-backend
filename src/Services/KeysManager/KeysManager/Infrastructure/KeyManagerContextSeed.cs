@@ -12,7 +12,7 @@ namespace MiniUrl.KeyManager.Infrastructure
 {
     public class KeyManagerContextSeed
     {
-        public async Task SeedAsync(KeyManagerContext context, IKeysGeneratorService keysGenerator, ILogger<KeyManagerContextSeed> logger)
+        public async Task SeedAsync(KeysManagerContext context, IKeysGeneratorService keysGenerator, ILogger<KeyManagerContextSeed> logger)
         {
             var policy = CreatePolicy(logger, nameof(KeyManagerContextSeed));
 
