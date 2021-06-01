@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
@@ -14,7 +15,7 @@ namespace MiniUrl.Association
         public static void Main(string[] args)
         {
             var configuration = GetConfiguration();
-            var host = CreateHostBuilder(args, configuration).Build();
+            var host = CreateWebHostBuilder(args, configuration).Build();
 
             host.MigrateDbContext<AssociationContext>((context, services) => { });
 
@@ -23,8 +24,8 @@ namespace MiniUrl.Association
 
         // Additional configuration is required to successfully run gRPC on macOS.
         // For instructions on how to configure Kestrel and gRPC clients on macOS, visit https://go.microsoft.com/fwlink/?linkid=2099682
-        public static IHostBuilder CreateHostBuilder(string[] args, IConfiguration configuration) =>
-            Host.CreateDefaultBuilder(args)
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args, IConfiguration configuration) =>
+            WebHost.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration(builder =>
                 {
                     var sources = builder.Sources;
@@ -35,18 +36,15 @@ namespace MiniUrl.Association
                         ReloadOnChange = false
                     });
                 })
-                .ConfigureWebHostDefaults(webBuilder =>
+                .ConfigureKestrel(options =>
                 {
-                    webBuilder.ConfigureKestrel(options =>
+                    var grpcPort = GetGrpcPort(configuration);
+                    options.Listen(IPAddress.Any, grpcPort, listenOptions =>
                     {
-                        var grpcPort = GetGrpcPort(configuration);
-                        options.Listen(IPAddress.Any, grpcPort, listenOptions =>
-                        {
-                            listenOptions.Protocols = HttpProtocols.Http2;
-                        });
-                    })
-                    .UseStartup<Startup>();
-                });
+                        listenOptions.Protocols = HttpProtocols.Http2;
+                    });
+                })
+                .UseStartup<Startup>();
 
         private static int GetGrpcPort(IConfiguration configuration)
         {
