@@ -18,7 +18,7 @@ namespace MiniUrl.KeyManager
         public static void Main(string[] args)
         {
             var configuration = GetConfiguration();
-            var host = CreateHostBuilder(args, configuration).Build();
+            var host = CreateWebHostBuilder(args, configuration).Build();
 
             host.MigrateDbContext<KeyManagerContext>((context, services) =>
             {
@@ -33,22 +33,19 @@ namespace MiniUrl.KeyManager
             host.Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args, IConfiguration configuration) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args, IConfiguration configuration) =>
+            WebHost.CreateDefaultBuilder(args)
+                .ConfigureKestrel(options =>
                 {
-                    webBuilder.ConfigureKestrel(options =>
+                    var grpcPort = GetGrpcPort(configuration);
+
+                    options.Listen(IPAddress.Any, grpcPort, listenOptions =>
                     {
-                        var grpcPort = GetGrpcPort(configuration);
+                        listenOptions.Protocols = HttpProtocols.Http2;
+                    });
 
-                        options.Listen(IPAddress.Any, grpcPort, listenOptions =>
-                        {
-                            listenOptions.Protocols = HttpProtocols.Http2;
-                        });
-
-                    })
-                    .UseStartup<Startup>();
-                });
+                })
+                .UseStartup<Startup>();
 
         private static int GetGrpcPort(IConfiguration configuration)
         {
