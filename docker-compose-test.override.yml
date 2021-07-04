@@ -1,0 +1,46 @@
+version: '3.4'
+
+services:
+  sqldb-test:
+    environment:
+      - POSTGRES_PASSWORD=postgres
+
+  keysmanager-test:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ConnectionString=Host=sqldb-test;Database=KeysManager;Username=postgres;Password=postgres
+      - GrpcPort=81
+    ports:
+      - "80"
+      - "443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  association-test:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ConnectionString=Host=sqldb-test;Database=Associations;Username=postgres;Password=postgres
+      - GrpcPort=81
+      - GrpcUrls__KeysManagerService=http://keysmanager:81
+    ports:
+      - "80"
+      - "443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  url-test:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ConnectionString=Host=sqldb-test;Database=Associations;Username=postgres;Password=postgres
+      - GrpcPort=81
+    ports:
+      - "80"
+      - "443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
