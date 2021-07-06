@@ -23,10 +23,10 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
       - ConnectionString=Host=sqldb-test;Database=Associations;Username=postgres;Password=postgres
-      - GrpcPort=81
-      - GrpcUrls__KeysManagerService=http://keysmanager:81
+      - GrpcPort=80
+      - GrpcUrls__KeysManagerService=http://keysmanager-test:81
     ports:
-      - "80"
+      - "5010:80"
       - "443"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
@@ -37,9 +37,9 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
       - ConnectionString=Host=sqldb-test;Database=Associations;Username=postgres;Password=postgres
-      - GrpcPort=81
+      - GrpcPort=80
     ports:
-      - "80"
+      - "5011:80"
       - "443"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
