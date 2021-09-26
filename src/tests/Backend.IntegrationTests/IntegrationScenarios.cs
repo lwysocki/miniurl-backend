@@ -1,7 +1,5 @@
-using Microsoft.AspNetCore.Hosting;
 using MiniUrl.ApiGateway.Web.Models;
-using MiniUrl.IntegrationTests.Services.ApiGateway;
-using System;
+using MiniUrl.IntegrationTests.TestOrdering;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -10,6 +8,7 @@ using Xunit;
 
 namespace MiniUrl.IntegrationTests
 {
+    [TestCaseOrderer("MiniUrl.IntegrationTests.TestOrdering.PriorityOrderer", "Backend.IntegrationTests")]
     public class IntegrationScenarios : IClassFixture<IntegrationFixture>
     {
         private IntegrationFixture _fixture;
@@ -19,7 +18,7 @@ namespace MiniUrl.IntegrationTests
             _fixture = fixture;
         }
 
-        [Fact]
+        [Fact, TestPriority(1)]
         public async Task SendAssociationRequestShouldReturnAssociatedKey()
         {
             var apiGatewayClient = _fixture.ApiGatewayServer.CreateClient();
@@ -37,7 +36,7 @@ namespace MiniUrl.IntegrationTests
             Assert.True(!string.IsNullOrEmpty(_fixture.Key));
         }
 
-        [Fact]
+        [Fact, TestPriority(2)]
         public async Task SendValidKeyShouldReturnAssociatedUrl()
         {
             var apiGatewayClient = _fixture.ApiGatewayServer.CreateClient();
