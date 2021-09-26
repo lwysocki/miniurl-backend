@@ -1,14 +1,14 @@
 namespace MiniUrl.Association.Domain.Model
 {
-    public class Address
+    public class Key
     {
         public long Id { get; set; }
-        public string Url { get; set; }
+        public KeyState State { get; set; }
 
-        public Address(long id, string url)
+        public Key(long id)
         {
             Id = id;
-            Url = url;
+            State = KeyState.New;
         }
     }
 }

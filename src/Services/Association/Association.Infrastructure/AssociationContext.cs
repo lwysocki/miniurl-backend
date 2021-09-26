@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using MiniUrl.Association.Domain.Model;
 using MiniUrl.Association.Infrastructure.EntityConfigurations;
@@ -19,7 +19,7 @@ namespace MiniUrl.Association.Infrastructure
         }
     }
 
-    public class KeyManagerDesignFactory : IDesignTimeDbContextFactory<AssociationContext>
+    public class AssociationDesignFactory : IDesignTimeDbContextFactory<AssociationContext>
     {
         public AssociationContext CreateDbContext(string[] args)
         {

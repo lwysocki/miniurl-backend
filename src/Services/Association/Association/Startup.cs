@@ -1,4 +1,4 @@
-﻿using GrpcAssociation;
+using GrpcAssociation;
 using GrpcKeysManager;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
