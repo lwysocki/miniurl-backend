@@ -22,9 +22,9 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
-      - ConnectionString=Host=sqldb;Database=Associations;Username=postgres;Password=postgres
+      - AssociationsConnectionString=Host=sqldb;Database=Associations;Username=postgres;Password=postgres
+      - KeysManagerConnectionString=Host=sqldb;Database=KeysManager;Username=postgres;Password=postgres
       - GrpcPort=81
-      - GrpcUrls__KeysManagerService=http://keysmanager:81
     ports:
       - "80"
       - "443"

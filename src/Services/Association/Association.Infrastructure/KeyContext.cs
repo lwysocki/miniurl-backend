@@ -18,15 +18,4 @@ namespace MiniUrl.Association.Infrastructure
             builder.ApplyConfiguration(new KeyEntityTypeConfiguration());
         }
     }
-
-    public class KeyDesignFactory : IDesignTimeDbContextFactory<KeyContext>
-    {
-        public KeyContext CreateDbContext(string[] args)
-        {
-            var optionsBuilder = new DbContextOptionsBuilder<KeyContext>()
-                .UseNpgsql("Host=localhost;Database=KeyManager;Username=postgres;Password=postgres");
-
-            return new(optionsBuilder.Options);
-        }
-    }
 }
