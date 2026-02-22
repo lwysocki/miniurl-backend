@@ -26,7 +26,7 @@ namespace MiniUrl.KeyManager.Infrastructure
         public KeysManagerContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<KeysManagerContext>()
-                .UseNpgsql("Host=localhost;Database=KeyManager;Username=postgres;Password=postgres");
+                .UseNpgsql("Host=localhost;Database=KeysManager;Username=postgres;Password=postgres");
 
             return new(optionsBuilder.Options);
         }

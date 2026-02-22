@@ -1,11 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System.Text.Json;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using System.Text.Json;
+
+#nullable disable
 
 namespace MiniUrl.KeyManager.Infrastructure.Migrations
 {
-    public partial class Initial : Migration
+    /// <inheritdoc />
+    public partial class InitialCreate : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -14,7 +18,7 @@ namespace MiniUrl.KeyManager.Infrastructure.Migrations
                 {
                     Key = table.Column<string>(type: "text", nullable: false),
                     Value = table.Column<JsonDocument>(type: "jsonb", nullable: false),
-                    Discriminator = table.Column<string>(type: "text", nullable: false)
+                    Discriminator = table.Column<string>(type: "character varying(34)", maxLength: 34, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -35,6 +39,7 @@ namespace MiniUrl.KeyManager.Infrastructure.Migrations
                 });
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
