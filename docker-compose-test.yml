@@ -1,23 +1,31 @@
-version: '3.4'
+version: "3.4"
 
 services:
   sqldb-test:
     image: postgres
+    ports:
+      - "5432:5432"
 
   keysmanager-test:
     image: ${DOCKER_REGISTRY-}keysmanager
     build:
       context: .
       dockerfile: src/Services/KeysManager/KeysManager/Dockerfile
+    depends_on:
+      - sqldb-test
 
   association-test:
     image: ${DOCKER_REGISTRY-}association
     build:
       context: .
       dockerfile: src/Services/Association/Association/Dockerfile
+    depends_on:
+      - sqldb-test
 
   url-test:
     image: ${DOCKER_REGISTRY-}url
     build:
       context: .
       dockerfile: src/Services/Url/Url/Dockerfile
+    depends_on:
+      - sqldb-test

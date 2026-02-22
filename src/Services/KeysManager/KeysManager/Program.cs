@@ -1,65 +1,39 @@
-using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using MiniUrl.KeyManager;
 using MiniUrl.KeyManager.Infrastructure;
 using MiniUrl.KeyManager.Services;
 using MiniUrl.Shared.WebHost.Extensions;
-using System.IO;
 using System.Net;
 
-namespace MiniUrl.KeyManager
+var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddJsonFile("appsettings.json");
+builder.WebHost.ConfigureKestrel((context, options) =>
 {
-    public class Program
+    var grpcPort = context.Configuration.GetValue("GrpcPort", 5012);
+    options.Listen(IPAddress.Any, grpcPort, listenOptions =>
     {
-        public static void Main(string[] args)
-        {
-            var configuration = GetConfiguration();
-            var host = CreateWebHostBuilder(args, configuration).Build();
+        listenOptions.Protocols = HttpProtocols.Http2;
+    });
+});
 
-            host.MigrateDbContext<KeysManagerContext>((context, services) =>
-            {
-                var logger = services.GetService<ILogger<KeyManagerContextSeed>>();
-                var keysGenerator = services.GetService<IKeysGeneratorService>();
+var startup = new Startup(builder.Configuration);
+startup.ConfigureServices(builder.Services);
 
-                new KeyManagerContextSeed()
-                    .SeedAsync(context, keysGenerator, logger)
-                    .Wait();
-            });
+var app = builder.Build();
+startup.Configure(app, app.Environment);
+app.MigrateDbContext<KeysManagerContext>((context, services) =>
+{
+    var logger = services.GetService<ILogger<KeyManagerContextSeed>>();
+    var keysGenerator = services.GetService<IKeysGeneratorService>();
 
-            host.Run();
-        }
+    new KeyManagerContextSeed()
+        .SeedAsync(context, keysGenerator, logger)
+        .Wait();
+});
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args, IConfiguration configuration) =>
-            WebHost.CreateDefaultBuilder(args)
-                .ConfigureKestrel(options =>
-                {
-                    var grpcPort = GetGrpcPort(configuration);
-
-                    options.Listen(IPAddress.Any, grpcPort, listenOptions =>
-                    {
-                        listenOptions.Protocols = HttpProtocols.Http2;
-                    });
-
-                })
-                .UseStartup<Startup>();
-
-        private static int GetGrpcPort(IConfiguration configuration)
-        {
-            return configuration.GetValue("GrpcPort", 5012);
-        }
-
-        private static IConfiguration GetConfiguration()
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddEnvironmentVariables();
-
-            return builder.Build();
-        }
-    }
-}
+app.Run();

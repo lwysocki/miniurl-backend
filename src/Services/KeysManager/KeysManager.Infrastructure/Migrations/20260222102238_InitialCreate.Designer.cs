@@ -7,19 +7,23 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MiniUrl.KeyManager.Infrastructure;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
+#nullable disable
+
 namespace MiniUrl.KeyManager.Infrastructure.Migrations
 {
     [DbContext(typeof(KeysManagerContext))]
-    [Migration("20210503181147_Initial")]
-    partial class Initial
+    [Migration("20260222102238_InitialCreate")]
+    partial class InitialCreate
     {
+        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.5")
-                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                .HasAnnotation("ProductVersion", "10.0.3")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("MiniUrl.KeyManager.Domain.Models.Configuration", b =>
                 {
@@ -28,7 +32,8 @@ namespace MiniUrl.KeyManager.Infrastructure.Migrations
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(34)
+                        .HasColumnType("character varying(34)");
 
                     b.Property<JsonDocument>("Value")
                         .IsRequired()
@@ -36,24 +41,27 @@ namespace MiniUrl.KeyManager.Infrastructure.Migrations
 
                     b.HasKey("Key");
 
-                    b.ToTable("Configuration");
+                    b.ToTable("Configuration", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Configuration");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("MiniUrl.KeyManager.Domain.Models.Key", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<byte>("State")
                         .HasColumnType("smallint");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Keys");
+                    b.ToTable("Keys", (string)null);
                 });
 
             modelBuilder.Entity("MiniUrl.KeyManager.Domain.Models.KeysGeneratorConfiguration", b =>

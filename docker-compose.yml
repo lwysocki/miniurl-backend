@@ -1,4 +1,4 @@
-version: '3.4'
+version: "3.4"
 
 services:
   sqldb:
@@ -9,18 +9,24 @@ services:
     build:
       context: .
       dockerfile: src/Services/KeysManager/KeysManager/Dockerfile
+    depends_on:
+      - sqldb
 
   association:
     image: ${DOCKER_REGISTRY-}association
     build:
       context: .
       dockerfile: src/Services/Association/Association/Dockerfile
+    depends_on:
+      - sqldb
 
   url:
     image: ${DOCKER_REGISTRY-}url
     build:
       context: .
       dockerfile: src/Services/Url/Url/Dockerfile
+    depends_on:
+      - sqldb
 
   apigateway.web:
     image: ${DOCKER_REGISTRY-}apigatewayweb

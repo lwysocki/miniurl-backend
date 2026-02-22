@@ -9,14 +9,9 @@ using Xunit;
 namespace MiniUrl.IntegrationTests
 {
     [TestCaseOrderer("MiniUrl.IntegrationTests.TestOrdering.PriorityOrderer", "Backend.IntegrationTests")]
-    public class IntegrationScenarios : IClassFixture<IntegrationFixture>
+    public class IntegrationScenarios(IntegrationFixture fixture) : IClassFixture<IntegrationFixture>
     {
-        private IntegrationFixture _fixture;
-
-        public IntegrationScenarios(IntegrationFixture fixture)
-        {
-            _fixture = fixture;
-        }
+        private readonly IntegrationFixture _fixture = fixture;
 
         [Fact, TestPriority(1)]
         public async Task SendAssociationRequestShouldReturnAssociatedKey()
@@ -33,7 +28,7 @@ namespace MiniUrl.IntegrationTests
 
             _fixture.Key = urlAssociation.Key;
 
-            Assert.True(!string.IsNullOrEmpty(_fixture.Key));
+            Assert.False(string.IsNullOrEmpty(_fixture.Key));
         }
 
         [Fact, TestPriority(2)]
@@ -41,10 +36,10 @@ namespace MiniUrl.IntegrationTests
         {
             var apiGatewayClient = _fixture.ApiGatewayServer.CreateClient();
 
-            var getResponse = await apiGatewayClient.GetAsync("urls/" + _fixture.Key);
-            var getContent = getResponse.Headers.Location.AbsoluteUri;
+            var response = await apiGatewayClient.GetAsync("urls/" + _fixture.Key);
+            var content = response.Headers.Location.AbsoluteUri;
 
-            Assert.True(getContent.Contains(IntegrationFixture.url));
+            Assert.Contains(IntegrationFixture.url, content);
         }
     }
 }
