@@ -15,19 +15,18 @@ namespace MiniUrl.Shared.WebHost.Extensions
             {
                 var services = scope.ServiceProvider;
                 var logger = services.GetRequiredService<ILogger<TContext>>();
-                var context = services.GetService<TContext>();
+                var context = services.GetRequiredService<TContext>();
 
                 try
                 {
                     logger.LogInformation("Migrating database associated with context {DbContextName}", typeof(TContext).Name);
 
                     var policy = Policy.Handle<NpgsqlException>()
-                        .WaitAndRetry(new TimeSpan[]
-                        {
+                        .WaitAndRetry([
                             TimeSpan.FromSeconds(3),
                             TimeSpan.FromSeconds(5),
                             TimeSpan.FromSeconds(8)
-                        });
+                        ]);
 
                     policy.Execute(() => InvokeSeeder(seeder, context, services));
                 }
