@@ -34,7 +34,7 @@ namespace MiniUrl.Association
             {
                 options.UseNpgsql(Configuration["AssociationsConnectionString"], npgsqlOptions =>
                 {
-                    npgsqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+                    npgsqlOptions.MigrationsAssembly(typeof(AssociationContext).GetTypeInfo().Assembly.GetName().Name);
                     npgsqlOptions.EnableRetryOnFailure(15, TimeSpan.FromSeconds(30), null);
                 });
             });

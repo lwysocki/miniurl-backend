@@ -1,8 +1,11 @@
-version: "3.4"
-
 services:
   sqldb:
-    image: postgres
+    image: postgres:18-alpine
+    healthcheck:
+      test: ["CMD-SHELL", "psql -U postgres -d postgres -c 'SELECT 1;'"]
+      interval: 3s
+      timeout: 3s
+      retries: 5
 
   keysmanager:
     image: ${DOCKER_REGISTRY-}keysmanager
@@ -10,7 +13,8 @@ services:
       context: .
       dockerfile: src/Services/KeysManager/KeysManager/Dockerfile
     depends_on:
-      - sqldb
+      sqldb:
+        condition: service_healthy
 
   association:
     image: ${DOCKER_REGISTRY-}association
@@ -18,7 +22,8 @@ services:
       context: .
       dockerfile: src/Services/Association/Association/Dockerfile
     depends_on:
-      - sqldb
+      sqldb:
+        condition: service_healthy
 
   url:
     image: ${DOCKER_REGISTRY-}url
@@ -26,7 +31,8 @@ services:
       context: .
       dockerfile: src/Services/Url/Url/Dockerfile
     depends_on:
-      - sqldb
+      sqldb:
+        condition: service_healthy
 
   apigateway.web:
     image: ${DOCKER_REGISTRY-}apigatewayweb

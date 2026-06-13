@@ -24,6 +24,6 @@ startup.ConfigureServices(builder.Services);
 
 var app = builder.Build();
 startup.Configure(app, app.Environment);
-app.MigrateDbContext<AssociationContext>((context, services) => { });
+await app.MigrateDbContextAsync<AssociationContext>(async (context, services) => { });
 
 app.Run();
