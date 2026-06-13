@@ -1,5 +1,4 @@
 using MiniUrl.ApiGateway.Web.Models;
-using MiniUrl.IntegrationTests.TestOrdering;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -8,39 +7,28 @@ using Xunit;
 
 namespace MiniUrl.IntegrationTests
 {
-    [TestCaseOrderer("MiniUrl.IntegrationTests.TestOrdering.PriorityOrderer", "Backend.IntegrationTests")]
     public class IntegrationScenarios(IntegrationFixture fixture) : IClassFixture<IntegrationFixture>
     {
         private readonly IntegrationFixture _fixture = fixture;
 
-        [Fact, TestPriority(1)]
-        public async Task SendAssociationRequestShouldReturnAssociatedKey()
+        [Fact]
+        public async Task RequestedUrlShouldBeRetrievableByAssociatedKey()
         {
-            var apiGatewayClient = _fixture.ApiGatewayServer.CreateClient();
-
             var urlRequest = new UrlRequest { Address = IntegrationFixture.url };
 
-            var response = await apiGatewayClient.PostAsync("urls",
-                new StringContent(JsonSerializer.Serialize(urlRequest), UTF8Encoding.UTF8, "application/json"));
-            var content = await response.Content.ReadAsStringAsync();
-            var urlAssociation = JsonSerializer.Deserialize<UrlAssociationData>(content,
+            var postResponse = await _fixture.ApiGatewayClient.PostAsync("urls",
+                new StringContent(JsonSerializer.Serialize(urlRequest), Encoding.UTF8, "application/json"));
+            var postContent = await postResponse.Content.ReadAsStringAsync();
+            var urlAssociation = JsonSerializer.Deserialize<UrlAssociationData>(postContent,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            _fixture.Key = urlAssociation.Key;
+            Assert.False(string.IsNullOrEmpty(urlAssociation.Key));
 
-            Assert.False(string.IsNullOrEmpty(_fixture.Key));
-        }
+            var getResponse = await _fixture.ApiGatewayClient.GetAsync("urls/" + urlAssociation.Key);
+            getResponse.EnsureSuccessStatusCode();
+            var getContent = await getResponse.Content.ReadAsStringAsync();
 
-        [Fact, TestPriority(2)]
-        public async Task SendValidKeyShouldReturnAssociatedUrl()
-        {
-            var apiGatewayClient = _fixture.ApiGatewayServer.CreateClient();
-
-            var response = await apiGatewayClient.GetAsync("urls/" + _fixture.Key);
-            response.EnsureSuccessStatusCode();
-            var content = await response.Content.ReadAsStringAsync();
-
-            Assert.Contains(IntegrationFixture.url, content);
+            Assert.Contains(IntegrationFixture.url, getContent);
         }
     }
 }
