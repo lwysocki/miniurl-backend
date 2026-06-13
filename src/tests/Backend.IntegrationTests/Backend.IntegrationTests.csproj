@@ -25,6 +25,12 @@
   <ItemGroup>
     <ProjectReference Include="..\..\ApiGateway.Web\ApiGateway.Web.csproj" />
     <ProjectReference Include="..\..\Services\KeysManager\KeysManager\KeysManager.csproj" />
+    <ProjectReference Include="..\..\Services\Association\Association\Association.csproj">
+      <Aliases>AssociationProj</Aliases>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Services\Url\Url\Url.csproj">
+      <Aliases>UrlProj</Aliases>
+    </ProjectReference>
   </ItemGroup>
 
   <ItemGroup>

@@ -10,6 +10,7 @@ using System.Net;
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("appsettings.json");
 builder.Configuration.AddJsonFile("appsettings.localhost.json");
+builder.Configuration.AddEnvironmentVariables();
 builder.WebHost.ConfigureKestrel((context, options) =>
 {
     var grpcPort = context.Configuration.GetValue("GrpcPort", 5010);
