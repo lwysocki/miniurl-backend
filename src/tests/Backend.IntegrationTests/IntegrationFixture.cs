@@ -4,17 +4,30 @@ extern alias UrlProj;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using DotNet.Testcontainers.Builders;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Testcontainers.PostgreSql;
 using Xunit;
 
 namespace MiniUrl.IntegrationTests
 {
     public class IntegrationFixture : IAsyncLifetime
     {
+        private readonly PostgreSqlContainer _associationDb = new PostgreSqlBuilder("postgres:18-alpine")
+            .WithUsername("postgres")
+            .WithPassword("postgres")
+            .WithDatabase("Associations")
+            .Build();
+        private readonly PostgreSqlContainer _keyManagerDb = new PostgreSqlBuilder("postgres:18-alpine")
+            .WithUsername("postgres")
+            .WithPassword("postgres")
+            .WithDatabase("KeysManager")
+            .Build();
+
         public WebApplicationFactory<KeyManager.Startup> KeyManagerFactory { get; private set; }
         public WebApplicationFactory<AssociationProj::MiniUrl.Association.Startup> AssociationFactory { get; private set; }
         public WebApplicationFactory<UrlProj::MiniUrl.Url.Startup> UrlFactory { get; private set; }
@@ -29,6 +42,11 @@ namespace MiniUrl.IntegrationTests
 
         public async Task InitializeAsync()
         {
+            await Task.WhenAll(_keyManagerDb.StartAsync(), _associationDb.StartAsync());
+
+            var keyManagerConnectionString = _keyManagerDb.GetConnectionString();
+            var associationConnectionString = _associationDb.GetConnectionString();
+
             KeyManagerFactory = new WebApplicationFactory<KeyManager.Startup>()
             .WithWebHostBuilder(builder =>
             {
@@ -37,7 +55,7 @@ namespace MiniUrl.IntegrationTests
                 {
                     config.AddInMemoryCollection(new Dictionary<string, string>
                     {
-                        { "ConnectionString", "Host=localhost;Port=5432;Database=KeysManager;Username=postgres;Password=postgres" },
+                        { "ConnectionString", keyManagerConnectionString },
                         { "GrpcPort", "81" },
                         { "KeysGenerator:Iteration", "0" },
                         { "KeysGenerator:Limit", "50000" },
@@ -56,8 +74,8 @@ namespace MiniUrl.IntegrationTests
                 {
                     config.AddInMemoryCollection(new Dictionary<string, string>
                     {
-                        { "AssociationsConnectionString", "Host=localhost;Port=5432;Database=Associations;Username=postgres;Password=postgres" },
-                        { "KeysManagerConnectionString", "Host=localhost;Port=5432;Database=KeysManager;Username=postgres;Password=postgres" },
+                        { "AssociationsConnectionString", associationConnectionString },
+                        { "KeysManagerConnectionString", keyManagerConnectionString },
                         { "GrpcPort", "5010" }
                     });
                 });
@@ -73,7 +91,7 @@ namespace MiniUrl.IntegrationTests
                 {
                     config.AddInMemoryCollection(new Dictionary<string, string>
                     {
-                        { "ConnectionString", "Host=localhost;Port=5432;Database=Associations;Username=postgres;Password=postgres" },
+                        { "ConnectionString", associationConnectionString },
                         { "GrpcPort", "5011" }
                     });
                 });
@@ -126,6 +144,9 @@ namespace MiniUrl.IntegrationTests
             await UrlFactory.DisposeAsync();
             await AssociationFactory.DisposeAsync();
             await KeyManagerFactory.DisposeAsync();
+
+            await Task.WhenAll(_associationDb.StopAsync(), _keyManagerDb.StopAsync());
+            await Task.WhenAll(_associationDb.DisposeAsync().AsTask(), _keyManagerDb.DisposeAsync().AsTask());
         }
     }
 }

@@ -1,4 +1,0 @@
-services:
-  sqldb-test:
-    environment:
-      - POSTGRES_PASSWORD=postgres
