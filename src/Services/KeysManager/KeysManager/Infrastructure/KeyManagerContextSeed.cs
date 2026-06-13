@@ -1,10 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using MiniUrl.KeyManager.Domain.Models;
 using MiniUrl.KeyManager.Services;
-using Npgsql;
-using Polly;
-using Polly.Retry;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,50 +10,39 @@ namespace MiniUrl.KeyManager.Infrastructure
     {
         public async Task SeedAsync(KeysManagerContext context, IKeysGeneratorService keysGenerator, ILogger<KeyManagerContextSeed> logger)
         {
-            var policy = CreatePolicy(logger, nameof(KeyManagerContextSeed));
+            KeysGeneratorConfiguration configuration = new() { Value = keysGenerator.SettingsJson };
 
-            await policy.ExecuteAsync(async () =>
+            if (!context.KeyGeneratorConfigurations.Any())
             {
-                KeysGeneratorConfiguration configuration = new() { Value = keysGenerator.SettingsJson };
+                await context.KeyGeneratorConfigurations.AddAsync(configuration);
+                await context.SaveChangesAsync();
+            }
+            else
+            {
+                configuration = context.KeyGeneratorConfigurations.SingleOrDefault();
+                keysGenerator.SettingsJson = configuration.Value;
+            }
 
-                if (!context.KeyGeneratorConfigurations.Any())
+            if (!context.Keys.Any())
+            {
+                var keys = keysGenerator.Generate();
+                var chunks = keys.Select(k => new Key(k)).Chunk(1000);
+
+                logger.LogInformation("Keys generated: {count}", keys.Count);
+
+                foreach (var chunk in chunks)
                 {
-                    await context.KeyGeneratorConfigurations.AddAsync(configuration);
+                    await context.Keys.AddRangeAsync(chunk);
                     await context.SaveChangesAsync();
                 }
-                else
-                {
-                    configuration = context.KeyGeneratorConfigurations.SingleOrDefault();
-                    keysGenerator.SettingsJson = configuration.Value;
-                }
 
-                if (!context.Keys.Any())
-                {
-                    var keys = keysGenerator.Generate();
-                    var keyEntities = keys.Select(k => new Key(k));
+                logger.LogInformation("Keys successfully generated and seeded in batches.");
 
-                    await context.Keys.AddRangeAsync(keyEntities);
-                    await context.SaveChangesAsync();
+                configuration.Value = keysGenerator.SettingsJson;
+                context.KeyGeneratorConfigurations.Update(configuration);
 
-                    configuration.Value = keysGenerator.SettingsJson;
-                    context.KeyGeneratorConfigurations.Update(configuration);
-
-                    await context.SaveChangesAsync();
-                }
-            });
-        }
-
-        private static AsyncRetryPolicy CreatePolicy(ILogger<KeyManagerContextSeed> logger, string prefix, int retries = 3)
-        {
-            return Policy.Handle<NpgsqlException>().
-                WaitAndRetryAsync(
-                    retryCount: retries,
-                    sleepDurationProvider: retry => TimeSpan.FromSeconds(5),
-                    onRetry: (exception, timeSpan, retry, ctx) =>
-                    {
-                        logger.LogWarning(exception, "[{prefix}] Exception {ExceptionType} with message {Message} detected on attempt {retry} of {retries}", prefix, exception.GetType().Name, exception.Message, retry, retries);
-                    }
-                );
+                await context.SaveChangesAsync();
+            }
         }
     }
 }

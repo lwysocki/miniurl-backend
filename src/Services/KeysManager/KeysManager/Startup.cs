@@ -32,8 +32,9 @@ namespace MiniUrl.KeyManager
             {
                 options.UseNpgsql(Configuration["ConnectionString"], npgsqlOptions =>
                 {
-                    npgsqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+                    npgsqlOptions.MigrationsAssembly(typeof(KeysManagerContext).GetTypeInfo().Assembly.GetName().Name);
                     npgsqlOptions.EnableRetryOnFailure(15, TimeSpan.FromSeconds(30), null);
+                    npgsqlOptions.MaxBatchSize(1000);
                 });
             });
 

@@ -26,14 +26,12 @@ startup.ConfigureServices(builder.Services);
 
 var app = builder.Build();
 startup.Configure(app, app.Environment);
-app.MigrateDbContext<KeysManagerContext>((context, services) =>
+await app.MigrateDbContextAsync<KeysManagerContext>(async (context, services) =>
 {
     var logger = services.GetService<ILogger<KeyManagerContextSeed>>();
     var keysGenerator = services.GetService<IKeysGeneratorService>();
 
-    new KeyManagerContextSeed()
-        .SeedAsync(context, keysGenerator, logger)
-        .Wait();
+    await new KeyManagerContextSeed().SeedAsync(context, keysGenerator, logger);
 });
 
 app.Run();

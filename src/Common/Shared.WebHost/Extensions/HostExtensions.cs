@@ -9,40 +9,53 @@ namespace MiniUrl.Shared.WebHost.Extensions
 {
     public static class HostExtensions
     {
-        public static IHost MigrateDbContext<TContext>(this IHost host, Action<TContext, IServiceProvider> seeder) where TContext : DbContext
+        public static async Task<IHost> MigrateDbContextAsync<TContext>(this IHost host, Func<TContext, IServiceProvider, Task> seeder) where TContext : DbContext
         {
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
                 var logger = services.GetRequiredService<ILogger<TContext>>();
-                var context = services.GetRequiredService<TContext>();
 
                 try
                 {
                     logger.LogInformation("Migrating database associated with context {DbContextName}", typeof(TContext).Name);
 
                     var policy = Policy.Handle<NpgsqlException>()
-                        .WaitAndRetry([
-                            TimeSpan.FromSeconds(3),
-                            TimeSpan.FromSeconds(5),
-                            TimeSpan.FromSeconds(8)
-                        ]);
+                        .WaitAndRetryAsync(
+                            sleepDurations: [
+                                TimeSpan.FromSeconds(3),
+                                TimeSpan.FromSeconds(5),
+                                TimeSpan.FromSeconds(8)
+                            ],
+                            onRetry: (exception, timeSpan, retryCount, context) =>
+                            {
+                                logger.LogWarning("Database connection failed. Retrying in {TimeSpan} seconds (Attempt {RetryCount}/3)... Exception: {Message}",
+                                    timeSpan.TotalSeconds, retryCount, exception.Message);
+                            });
 
-                    policy.Execute(() => InvokeSeeder(seeder, context, services));
+                    await policy.ExecuteAsync(async () =>
+                    {
+                        using var retryScope = host.Services.CreateScope();
+                        var retryServices = retryScope.ServiceProvider;
+                        var context = retryServices.GetRequiredService<TContext>();
+
+                        await InvokeSeederAsync(seeder, context, retryServices);
+                    });
                 }
                 catch (Exception ex)
                 {
                     logger.LogError(ex, "An error occurred while migrating the database used on context {DbContextName}", typeof(TContext).Name);
+                    throw;
                 }
             }
 
             return host;
         }
 
-        private static void InvokeSeeder<TContext>(Action<TContext, IServiceProvider> seeder, TContext context, IServiceProvider services) where TContext : DbContext
+        private static async Task InvokeSeederAsync<TContext>(Func<TContext, IServiceProvider, Task> seeder, TContext context, IServiceProvider services) where TContext : DbContext
         {
-            context.Database.Migrate();
-            seeder(context, services);
+            await context.Database.MigrateAsync();
+            await seeder(context, services);
         }
     }
 }

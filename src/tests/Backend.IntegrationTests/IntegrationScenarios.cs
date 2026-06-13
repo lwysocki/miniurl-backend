@@ -37,7 +37,8 @@ namespace MiniUrl.IntegrationTests
             var apiGatewayClient = _fixture.ApiGatewayServer.CreateClient();
 
             var response = await apiGatewayClient.GetAsync("urls/" + _fixture.Key);
-            var content = response.Headers.Location.AbsoluteUri;
+            response.EnsureSuccessStatusCode();
+            var content = await response.Content.ReadAsStringAsync();
 
             Assert.Contains(IntegrationFixture.url, content);
         }

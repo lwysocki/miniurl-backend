@@ -4,6 +4,7 @@ using MiniUrl.ApiGateway.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("appsettings.localhost.json");
+builder.Configuration.AddEnvironmentVariables();
 
 var startup = new Startup(builder.Configuration);
 startup.ConfigureServices(builder.Services);

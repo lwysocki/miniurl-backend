@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi;
 using MiniUrl.ApiGateway.Web.Services;
@@ -42,8 +43,10 @@ namespace MiniUrl.ApiGateway.Web
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ApiGateway.Web v1"));
             }
-
-            app.UseHttpsRedirection();
+            else
+            {
+                app.UseHttpsRedirection();
+            }
 
             app.UseRouting();
 
@@ -83,7 +86,11 @@ namespace MiniUrl.ApiGateway.Web
 
             services.AddGrpcClient<Url.UrlClient>((services, options) =>
             {
+                var logger = services.GetRequiredService<ILogger<Startup>>();
                 var urlServiceUrl = services.GetRequiredService<IOptions<GrpcUrls>>().Value.UrlService;
+
+                logger.LogInformation("Initializing UrlClient with {urlServiceUrl}", urlServiceUrl);
+
                 options.Address = new Uri(urlServiceUrl);
             }).AddInterceptor<GrpcExceptionInterceptor>();
 
@@ -91,7 +98,11 @@ namespace MiniUrl.ApiGateway.Web
 
             services.AddGrpcClient<Association.AssociationClient>((services, options) =>
             {
+                var logger = services.GetRequiredService<ILogger<Startup>>();
                 var associationServiceUrl = services.GetRequiredService<IOptions<GrpcUrls>>().Value.AssociationService;
+
+                logger.LogInformation("Initializing AssociationClient with {associationServiceUrl}", associationServiceUrl);
+
                 options.Address = new Uri(associationServiceUrl);
             }).AddInterceptor<GrpcExceptionInterceptor>();
 
