@@ -9,15 +9,6 @@ services:
       timeout: 3s
       retries: 5
 
-  keysmanager-test:
-    image: ${DOCKER_REGISTRY-}keysmanager
-    build:
-      context: .
-      dockerfile: src/Services/KeysManager/KeysManager/Dockerfile
-    depends_on:
-      sqldb-test:
-        condition: service_healthy
-
   association-test:
     image: ${DOCKER_REGISTRY-}association
     build:
