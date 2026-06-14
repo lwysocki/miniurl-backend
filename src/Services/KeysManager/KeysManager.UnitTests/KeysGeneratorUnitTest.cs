@@ -18,7 +18,7 @@ namespace MiniUrl.KeyManager.UnitTests
             var keys = keysGenerator.Generate();
 
             Assert.Equal(expectedKeysCount, keys.Count);
-            Assert.Equal(new List<long> { 1, 101, 201, 301, 401, 501, 601, 701, 801, 901 }, keys);
+            Assert.Equal([1, 101, 201, 301, 401, 501, 601, 701, 801, 901], keys);
         }
 
         [Fact]
@@ -30,7 +30,7 @@ namespace MiniUrl.KeyManager.UnitTests
 
             var keysSecondIteration = keysGenerator.Generate();
 
-            Assert.Equal(new List<long> { 2, 102, 202, 302, 402, 502, 602, 702, 802, 902 }, keysSecondIteration);
+            Assert.Equal([2, 102, 202, 302, 402, 502, 602, 702, 802, 902], keysSecondIteration);
         }
 
         [Fact]
@@ -58,7 +58,8 @@ namespace MiniUrl.KeyManager.UnitTests
                 {
                     generatedKeys[keysGenerator.Settings.Iteration + i] = key;
                     i += step;
-                };
+                }
+                ;
             }
 
             Assert.Equal(expectedKeys, generatedKeys);
@@ -71,7 +72,7 @@ namespace MiniUrl.KeyManager.UnitTests
             int iterationCount = (int)settings.Value.Step;
             IKeysGeneratorService keysGenerator = new KeysGeneratorService(settings);
 
-            Dictionary<long, int> keyCount = new();
+            Dictionary<long, int> keyCount = [];
 
             while (iterationCount > 0)
             {
@@ -84,10 +85,11 @@ namespace MiniUrl.KeyManager.UnitTests
                         keyCount.Add(key, 1);
                     else
                         keyCount[key]++;
-                };
+                }
+                ;
             }
 
-            Assert.True(!keyCount.Values.Any(v => v != 1));
+            Assert.DoesNotContain(keyCount.Values, v => v != 1);
         }
     }
 

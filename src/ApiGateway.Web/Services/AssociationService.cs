@@ -4,14 +4,9 @@ using System.Threading.Tasks;
 
 namespace MiniUrl.ApiGateway.Web.Services
 {
-    public class AssociationService : IAssociationService
+    public class AssociationService(Association.AssociationClient associationClient) : IAssociationService
     {
-        private readonly Association.AssociationClient _associationClient;
-
-        public AssociationService(Association.AssociationClient associationClient)
-        {
-            _associationClient = associationClient;
-        }
+        private readonly Association.AssociationClient _associationClient = associationClient;
 
         public async Task<UrlAssociationData> AddUrlAsync(Models.UrlRequest url)
         {

@@ -5,14 +5,10 @@ using MiniUrl.KeyManager.Infrastructure.EntityConfigurations;
 
 namespace MiniUrl.KeyManager.Infrastructure
 {
-    public class KeysManagerContext : DbContext
+    public class KeysManagerContext(DbContextOptions<KeysManagerContext> options) : DbContext(options)
     {
         public DbSet<KeysGeneratorConfiguration> KeyGeneratorConfigurations { get; set; }
         public DbSet<Key> Keys { get; set; }
-
-        public KeysManagerContext(DbContextOptions<KeysManagerContext> options) : base(options)
-        {
-        }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

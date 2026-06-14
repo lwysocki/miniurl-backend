@@ -7,21 +7,14 @@ using System.Threading.Tasks;
 
 namespace GrpcUrl
 {
-    public class UrlService : Url.UrlBase
+    public class UrlService(
+        UrlContext context,
+        IKeyConverter keyConverter,
+        ILogger<UrlService> logger) : Url.UrlBase
     {
-        private readonly ILogger<UrlService> _logger;
-        private readonly UrlContext _context;
-        private readonly IKeyConverter _keyConverter;
-
-        public UrlService(
-            UrlContext context,
-            IKeyConverter keyConverter,
-            ILogger<UrlService> logger)
-        {
-            _context = context;
-            _keyConverter = keyConverter;
-            _logger = logger;
-        }
+        private readonly ILogger<UrlService> _logger = logger;
+        private readonly UrlContext _context = context;
+        private readonly IKeyConverter _keyConverter = keyConverter;
 
         public override async Task<UrlAssociationReply> GetUrlByKey(KeyRequest request, ServerCallContext context)
         {

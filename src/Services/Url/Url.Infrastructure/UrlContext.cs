@@ -5,13 +5,9 @@ using MiniUrl.Url.Infrastructure.EntityConfigurations;
 
 namespace MiniUrl.Url.Infrastructure
 {
-    public class UrlContext : DbContext
+    public class UrlContext(DbContextOptions<UrlContext> options) : DbContext(options)
     {
         public DbSet<Address> Addresses { get; set; }
-
-        public UrlContext(DbContextOptions<UrlContext> options) : base(options)
-        {
-        }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

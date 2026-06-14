@@ -4,14 +4,9 @@ using System.Threading.Tasks;
 
 namespace MiniUrl.ApiGateway.Web.Services
 {
-    public class UrlService : IUrlService
+    public class UrlService(Url.UrlClient urlClient) : IUrlService
     {
-        private readonly Url.UrlClient _urlClient;
-
-        public UrlService(Url.UrlClient urlClient)
-        {
-            _urlClient = urlClient;
-        }
+        private readonly Url.UrlClient _urlClient = urlClient;
 
         public async Task<UrlAssociationData> GetByKeyAsync(string key)
         {

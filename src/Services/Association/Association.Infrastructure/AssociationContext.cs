@@ -5,13 +5,9 @@ using MiniUrl.Association.Infrastructure.EntityConfigurations;
 
 namespace MiniUrl.Association.Infrastructure
 {
-    public class AssociationContext : DbContext
+    public class AssociationContext(DbContextOptions<AssociationContext> options) : DbContext(options)
     {
         public DbSet<Address> Addresses { get; set; }
-
-        public AssociationContext(DbContextOptions<AssociationContext> options) : base(options)
-        {
-        }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

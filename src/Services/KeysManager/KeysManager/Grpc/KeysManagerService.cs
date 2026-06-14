@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GrpcKeysManager
 {
-    public class KeysManagerService : KeysManager.KeysManagerBase
+    public class KeysManagerService(IOptions<KeysManagerService.KeysManagerSettings> settings, IKeysManagerRepository repository) : KeysManager.KeysManagerBase
     {
         public class KeysManagerSettings
         {
@@ -15,14 +15,8 @@ namespace GrpcKeysManager
             public int Threshold { get; set; }
         }
 
-        public KeysManagerSettings Settings { get; private set; }
-        public readonly IKeysManagerRepository _repository;
-
-        public KeysManagerService(IOptions<KeysManagerSettings> settings, IKeysManagerRepository repository)
-        {
-            Settings = settings?.Value ?? throw new ArgumentNullException(nameof(settings));
-            _repository = repository;
-        }
+        public KeysManagerSettings Settings { get; private set; } = settings?.Value ?? throw new ArgumentNullException(nameof(settings));
+        public readonly IKeysManagerRepository _repository = repository;
 
         public override async Task<KeyIdReply> GetAvailableKeyId(KeyIdRequest request, ServerCallContext context)
         {
