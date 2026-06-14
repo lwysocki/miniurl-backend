@@ -8,24 +8,16 @@ using System.Threading.Tasks;
 
 namespace GrpcAssociation
 {
-    public class AssociationService : Association.AssociationBase
+    public class AssociationService(
+        AssociationContext associationContext,
+        IKeyRepository keysRepository,
+        IKeyConverter keyConverter,
+        ILogger<AssociationService> logger) : Association.AssociationBase
     {
-        private readonly ILogger<AssociationService> _logger;
-        private readonly AssociationContext _associationContext;
-        private readonly IKeyRepository _keyRepository;
-        private readonly IKeyConverter _keyConverter;
-
-        public AssociationService(
-            AssociationContext associationContext,
-            IKeyRepository keysRepository,
-            IKeyConverter keyConverter,
-            ILogger<AssociationService> logger)
-        {
-            _logger = logger;
-            _associationContext = associationContext;
-            _keyRepository = keysRepository;
-            _keyConverter = keyConverter;
-        }
+        private readonly ILogger<AssociationService> _logger = logger;
+        private readonly AssociationContext _associationContext = associationContext;
+        private readonly IKeyRepository _keyRepository = keysRepository;
+        private readonly IKeyConverter _keyConverter = keyConverter;
 
         public override async Task<UrlAssociationReply> AddUrl(UrlRequest request, ServerCallContext context)
         {

@@ -5,14 +5,9 @@ using System.Threading.Tasks;
 
 namespace MiniUrl.Shared.Infrastructure
 {
-    public class GrpcExceptionInterceptor : Interceptor
+    public class GrpcExceptionInterceptor(ILogger<GrpcExceptionInterceptor> logger) : Interceptor
     {
-        private readonly ILogger<GrpcExceptionInterceptor> _logger;
-
-        public GrpcExceptionInterceptor(ILogger<GrpcExceptionInterceptor> logger)
-        {
-            _logger = logger;
-        }
+        private readonly ILogger<GrpcExceptionInterceptor> _logger = logger;
 
         public override AsyncUnaryCall<TResponse> AsyncUnaryCall<TRequest, TResponse>(
             TRequest request,

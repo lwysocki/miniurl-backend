@@ -6,7 +6,7 @@ using System.Text.Json;
 
 namespace MiniUrl.KeyManager.Services
 {
-    public class KeysGeneratorService : IKeysGeneratorService
+    public class KeysGeneratorService(IOptions<KeysGeneratorService.KeysGeneratorSettings> settings) : IKeysGeneratorService
     {
         public class KeysGeneratorSettings
         {
@@ -30,16 +30,11 @@ namespace MiniUrl.KeyManager.Services
             }
         }
 
-        public KeysGeneratorSettings Settings { get; private set; }
-
-        public KeysGeneratorService(IOptions<KeysGeneratorSettings> settings)
-        {
-            Settings = settings?.Value ?? throw new ArgumentNullException(nameof(settings));
-        }
+        public KeysGeneratorSettings Settings { get; private set; } = settings?.Value ?? throw new ArgumentNullException(nameof(settings));
 
         public IList<long> Generate()
         {
-            IList<long> keys = new List<long>();
+            IList<long> keys = [];
             long current = ++Settings.Iteration;
 
             while (current < Settings.Limit)

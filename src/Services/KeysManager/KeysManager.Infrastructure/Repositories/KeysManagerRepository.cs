@@ -5,14 +5,9 @@ using System.Threading.Tasks;
 
 namespace MiniUrl.KeyManager.Infrastructure.Repositories
 {
-    public class KeysManagerRepository : IKeysManagerRepository
+    public class KeysManagerRepository(KeysManagerContext context) : IKeysManagerRepository
     {
-        private readonly KeysManagerContext _context;
-
-        public KeysManagerRepository(KeysManagerContext context)
-        {
-            _context = context;
-        }
+        private readonly KeysManagerContext _context = context;
 
         public async Task<int> CountAvailableKeys()
         {
