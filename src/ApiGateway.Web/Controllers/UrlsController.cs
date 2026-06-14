@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Mvc;
 using MiniUrl.ApiGateway.Web.Models;
 using MiniUrl.ApiGateway.Web.Services;
 using System.Threading.Tasks;
@@ -7,7 +8,7 @@ namespace MiniUrl.ApiGateway.Web.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [ApiVersion("1.0")]
+    [ApiVersion(1.0)]
     public class UrlsController : ControllerBase
     {
         private readonly IUrlService _urlService;
