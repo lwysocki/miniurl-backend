@@ -1,4 +1,10 @@
 services:
+  etcd:
+    environment:
+      - ALLOW_NONE_AUTHENTICATION=yes
+    ports:
+      - "2379:2379"
+
   sqldb:
     environment:
       - POSTGRES_PASSWORD=postgres
@@ -8,6 +14,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
       - ConnectionString=Host=sqldb;Database=Associations;Username=postgres;Password=postgres
+      - EtcdConnectionString=http://etcd:2379
       - GrpcPort=81
     ports:
       - "80"
