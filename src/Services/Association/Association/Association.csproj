@@ -11,10 +11,10 @@
 
   <ItemGroup>
     <Protobuf Include="Protos\association.proto" GrpcServices="Server" />
-    <Protobuf Include="..\..\KeysManager\KeysManager\Protos\keys_manager.proto" GrpcServices="Client" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="dotnet-etcd" Version="8.1.0" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.80.0" />
     <PackageReference Include="Grpc.AspNetCore.Server.ClientFactory" Version="2.80.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.9">

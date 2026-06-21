@@ -1,15 +1,18 @@
 extern alias AssociationProj;
 extern alias UrlProj;
 
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using DotNet.Testcontainers.Builders;
+using DotNet.Testcontainers.Containers;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Testcontainers.PostgreSql;
 using Xunit;
 
@@ -17,23 +20,22 @@ namespace MiniUrl.IntegrationTests
 {
     public class IntegrationFixture : IAsyncLifetime
     {
+        private readonly IContainer _etcdContainer = new ContainerBuilder("quay.io/coreos/etcd:v3.5.0")
+            .WithPortBinding(2379, true)
+            .WithEnvironment("ALLOW_NONE_AUTHENTICATION", "yes")
+            .WithEnvironment("ETCD_LISTEN_CLIENT_URLS", "http://0.0.0.0:2379")
+            .WithEnvironment("ETCD_ADVERTISE_CLIENT_URLS", "http://127.0.0.1:2379")
+            .Build();
         private readonly PostgreSqlContainer _associationDb = new PostgreSqlBuilder("postgres:18-alpine")
             .WithUsername("postgres")
             .WithPassword("postgres")
             .WithDatabase("Associations")
             .Build();
-        private readonly PostgreSqlContainer _keyManagerDb = new PostgreSqlBuilder("postgres:18-alpine")
-            .WithUsername("postgres")
-            .WithPassword("postgres")
-            .WithDatabase("KeysManager")
-            .Build();
 
-        public WebApplicationFactory<KeyManager.Startup> KeyManagerFactory { get; private set; }
-        public WebApplicationFactory<AssociationProj::MiniUrl.Association.Startup> AssociationFactory { get; private set; }
-        public WebApplicationFactory<UrlProj::MiniUrl.Url.Startup> UrlFactory { get; private set; }
+        public WebApplicationFactory<AssociationProj::Program> AssociationFactory { get; private set; }
+        public WebApplicationFactory<UrlProj::Program> UrlFactory { get; private set; }
         public WebApplicationFactory<ApiGateway.Web.Startup> ApiGatewayFactory { get; private set; }
 
-        public HttpClient KeyManagerClient { get; private set; }
         public HttpClient AssociationClient { get; private set; }
         public HttpClient UrlClient { get; private set; }
         public HttpClient ApiGatewayClient { get; private set; }
@@ -42,40 +44,20 @@ namespace MiniUrl.IntegrationTests
 
         public async Task InitializeAsync()
         {
-            await Task.WhenAll(_keyManagerDb.StartAsync(), _associationDb.StartAsync());
+            await Task.WhenAll(_associationDb.StartAsync(), _etcdContainer.StartAsync());
 
-            var keyManagerConnectionString = _keyManagerDb.GetConnectionString();
+            var etcdConnectionString = $"http://{_etcdContainer.Hostname}:{_etcdContainer.GetMappedPublicPort(2379)}";
             var associationConnectionString = _associationDb.GetConnectionString();
 
-            KeyManagerFactory = new WebApplicationFactory<KeyManager.Startup>()
-            .WithWebHostBuilder(builder =>
+            AssociationFactory = new MiniUrlWebApplicationFactory<AssociationProj::Program>(builder =>
             {
                 builder.UseEnvironment("Development");
-                builder.ConfigureAppConfiguration((context, config) =>
+                builder.ConfigureHostConfiguration(config =>
                 {
                     config.AddInMemoryCollection(new Dictionary<string, string>
                     {
-                        { "ConnectionString", keyManagerConnectionString },
-                        { "GrpcPort", "81" },
-                        { "KeysGenerator:Iteration", "0" },
-                        { "KeysGenerator:Limit", "50000" },
-                        { "KeysGenerator:Step", "1000" }
-                    });
-                });
-            });
-
-            KeyManagerClient = KeyManagerFactory.CreateClient();
-
-            AssociationFactory = new WebApplicationFactory<AssociationProj::MiniUrl.Association.Startup>()
-            .WithWebHostBuilder(builder =>
-            {
-                builder.UseEnvironment("Development");
-                builder.ConfigureAppConfiguration((context, config) =>
-                {
-                    config.AddInMemoryCollection(new Dictionary<string, string>
-                    {
-                        { "AssociationsConnectionString", associationConnectionString },
-                        { "KeysManagerConnectionString", keyManagerConnectionString },
+                        { "EtcdConnectionString", etcdConnectionString},
+                        { "ConnectionString", associationConnectionString },
                         { "GrpcPort", "5010" }
                     });
                 });
@@ -83,11 +65,10 @@ namespace MiniUrl.IntegrationTests
 
             AssociationClient = AssociationFactory.CreateClient();
 
-            UrlFactory = new WebApplicationFactory<UrlProj::MiniUrl.Url.Startup>()
-            .WithWebHostBuilder(builder =>
+            UrlFactory = new MiniUrlWebApplicationFactory<UrlProj::Program>(builder =>
             {
                 builder.UseEnvironment("Development");
-                builder.ConfigureAppConfiguration((context, config) =>
+                builder.ConfigureHostConfiguration(config =>
                 {
                     config.AddInMemoryCollection(new Dictionary<string, string>
                     {
@@ -138,15 +119,15 @@ namespace MiniUrl.IntegrationTests
             ApiGatewayClient?.Dispose();
             UrlClient?.Dispose();
             AssociationClient?.Dispose();
-            KeyManagerClient?.Dispose();
 
             await ApiGatewayFactory.DisposeAsync();
             await UrlFactory.DisposeAsync();
             await AssociationFactory.DisposeAsync();
-            await KeyManagerFactory.DisposeAsync();
 
-            await Task.WhenAll(_associationDb.StopAsync(), _keyManagerDb.StopAsync());
-            await Task.WhenAll(_associationDb.DisposeAsync().AsTask(), _keyManagerDb.DisposeAsync().AsTask());
+            await Task.WhenAll(_etcdContainer.StopAsync(), _associationDb.StopAsync());
+
+            await _associationDb.DisposeAsync().AsTask();
+            await _etcdContainer.DisposeAsync().AsTask();
         }
     }
 }
